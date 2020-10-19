@@ -30,7 +30,7 @@ namespace AccountingSystemUI
         //{
         //AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
         //M1 mw = new M1();
-        //mw.ShowDialog();
+        //
         //}
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
@@ -41,7 +41,7 @@ namespace AccountingSystemUI
             _currentUserName = "Петр";
             moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUserName);
             App.Current.MainWindow = moneyManagementWindow;
-            moneyManagementWindow.Show();
+            moneyManagementWindow.Show();//
 
         }
         private void App_OnExit(object sender, ExitEventArgs e)
