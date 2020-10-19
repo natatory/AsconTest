@@ -1,0 +1,52 @@
+﻿<Window x:Class="AccountingSystemUI.View.AddCatForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AccountingSystemUI.View"
+        xmlns:vm="clr-namespace:AccountingSystemUI.ViewModel"
+        mc:Ignorable="d"
+        Title="Добавление категории" Height="175" Width="200"
+        vm:DialogCloser.DialogResult="{Binding Path=DialogResult}" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <!--<Setter Property="Background" Value="LightCoral" />-->
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={RelativeSource Self},
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                    
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Foreground="Red" FontSize="20" Text="!"
+                            ToolTip="{Binding ElementName=controlWithError,
+                            Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"/>
+                            <Border BorderBrush="Red" BorderThickness="0">
+                                <AdornedElementPlaceholder Name="controlWithError" />
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <vm:CategoryConverter x:Key="CategoryConverter"/>
+    </Window.Resources>
+    <Grid>
+        <TextBox Name="txtCatName" HorizontalAlignment="Left" Height="23" Margin="10,40,0,0" VerticalAlignment="Top" Width="155"
+                 Text="{Binding Path=NewCategory.Name, ValidatesOnExceptions=True, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Content="Название категории" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="25"/>
+        <Button IsDefault="True" Content="Добавить" HorizontalAlignment="Left" Margin="90,95,0,0" VerticalAlignment="Top" Width="75"
+                Command="{Binding Path=DataContext.AddCatCmd,
+                    RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                CommandParameter="{Binding ElementName=txtCatName, Path=Text, Converter={StaticResource CategoryConverter}}"
+                />
+        <Button IsCancel="True" Content="Отмена" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" Width="75"/>
+
+    </Grid>
+</Window>
