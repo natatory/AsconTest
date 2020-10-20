@@ -7,6 +7,9 @@ using AccountingSystemDAL.Repos;
 using AccountingSystemUI.Application;
 using PropertyChanged;
 using System.Linq;
+using System.Collections.ObjectModel;
+using System.Windows;
+
 
 namespace AccountingSystemUI.ViewModel
 {
@@ -15,29 +18,49 @@ namespace AccountingSystemUI.ViewModel
     {
         public IRepo<User> _userRepo;
         public IList<User> Users { get; set; }
-        public IList<WinAccount> WinUsers { get; set; }
+        public IList<IWinAccount> WinUsers { get; set; }
         public bool? DialogResult { get; set; }
+        public User NewUser { get; set; }
         public AddUserFormVM(IRepo<User> userRepo, IList<User> users)
         {
             _userRepo = userRepo;
             Users = users;
             WinUsers = GetWinAccounts();
+            NewUser = GetNewUser();
         }
-
+        //generate a part of a new User entity,  
+        //this will be send to the form as some initial data fields
+        //to allow Model Validation-based check input
         private User GetNewUser()
         {
             return new User()
             {
-                UserId = Guid.NewGuid(),
                 FirstName = "Имя",
                 LastName = "Фамилия",
-                 
+                Balance = 100m,
             };
+        }
+
+        private IList<IWinAccount> GetWinAccounts()
+        {
+            try
+            {
+                return new ObservableCollection<IWinAccount>(WinHelper.GetWinUsers());
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMsg(ex.Message);
+                return null;
+            }
         }
         private ICommand _addUserCmd = null;
         public ICommand AddUserCmd =>
-
              _addUserCmd ?? (_addUserCmd = new AddUserCommand(_userRepo, Users));
+
+        private ICommand _openAddWinUserFormCmd = null;
+        public ICommand OpenAddWinUserFormCmd =>
+             _openAddWinUserFormCmd ?? (_openAddWinUserFormCmd = new OpenAddWinUserFormCommand(WinUsers));
+
         private void CloseAddDialogEventSubscribe()
         {
             if (AddUserCmd != null)
@@ -46,6 +69,12 @@ namespace AccountingSystemUI.ViewModel
                     (object sender, EventArgs e) => DialogResult = true;
             }
         }
-
+        private void ShowErrorMsg(string msg)
+        {
+            MessageBox.Show(msg, "Ошибка",
+                         MessageBoxButton.OK,
+                         MessageBoxImage.Exclamation
+                         );
+        }
     }
 }

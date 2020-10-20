@@ -100,25 +100,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Application\DBConnect.cs" />
+    <Compile Include="Application\IWinAccount.cs" />
     <Compile Include="Application\WinAccount.cs" />
+    <Compile Include="Application\WinHelper.cs" />
     <Compile Include="Cmds\AddCatCommand.cs" />
     <Compile Include="Cmds\AddDataCommand.cs" />
     <Compile Include="Cmds\AddRecCommand.cs" />
     <Compile Include="Cmds\AddUserCommand.cs" />
+    <Compile Include="Cmds\AddWinUserCommand.cs" />
     <Compile Include="Cmds\CommandBase.cs" />
     <Compile Include="Cmds\OpenAddCategoryFormCommand.cs" />
     <Compile Include="Cmds\OpenAddRecipientFormCommand.cs" />
+    <Compile Include="Cmds\OpenAddWinUserFormCommand.cs" />
     <Compile Include="Cmds\OpenUserManagementFormCommand.cs" />
     <Compile Include="CustomizeWindow\WindowCustomizer.cs" />
     <Compile Include="ViewModel\AddCatFormVM.cs" />
     <Compile Include="ViewModel\AddRecipientFormVM.cs" />
     <Compile Include="ViewModel\AddUserFormVM.cs" />
+    <Compile Include="ViewModel\AddWinUserFormVM.cs" />
     <Compile Include="ViewModel\CategoryConverter.cs" />
     <Compile Include="ViewModel\DataGridIndexConverter.cs" />
     <Compile Include="ViewModel\DataMultiConverter.cs" />
     <Compile Include="ViewModel\DialogCloser.cs" />
     <Compile Include="ViewModel\MoneyManagementVM.cs" />
     <Compile Include="ViewModel\RecipientConverter.cs" />
+    <Compile Include="ViewModel\UserMultiConverter.cs" />
+    <Compile Include="ViewModel\WinAccountMultiConverter.cs" />
     <Compile Include="View\AddCatForm.xaml.cs">
       <DependentUpon>AddCatForm.xaml</DependentUpon>
     </Compile>
@@ -127,6 +135,9 @@
     </Compile>
     <Compile Include="View\AddUserForm.xaml.cs">
       <DependentUpon>AddUserForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddWinUserForm.xaml.cs">
+      <DependentUpon>AddWinUserForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MoneyManagementWindow.xaml.cs">
       <DependentUpon>MoneyManagementWindow.xaml</DependentUpon>
@@ -143,9 +154,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\M1.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="View\AddWinUserForm.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -157,7 +168,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModel\M1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

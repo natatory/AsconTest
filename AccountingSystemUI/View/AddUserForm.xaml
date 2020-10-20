@@ -3,9 +3,66 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:AccountingSystemUI.ViewModel"
         xmlns:local="clr-namespace:AccountingSystemUI.View"
         mc:Ignorable="d"
-        Title="Управление пользователями" Height="452" Width="800">
+        Title="Управление пользователями" Height="452" Width="800"
+        ResizeMode="NoResize"
+        vm:DialogCloser.DialogResult="{Binding Path=DialogResult}" >
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <!--<Setter Property="Background" Value="LightCoral" />-->
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={RelativeSource Self},
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Foreground="Red" FontSize="20" Text="!"
+                            ToolTip="{Binding ElementName=controlWithError,
+                            Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"/>
+                            <Border BorderBrush="Red" BorderThickness="0">
+                                <AdornedElementPlaceholder Name="controlWithError" />
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type ComboBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <!--<Setter Property="Background" Value="LightCoral" />-->
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={RelativeSource Self},
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Foreground="Red" FontSize="20" Text="!"
+                            ToolTip="{Binding ElementName=controlWithError,
+                            Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"/>
+                            <Border BorderBrush="Red" BorderThickness="1">
+                                <AdornedElementPlaceholder Name="controlWithError" />
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <vm:UserMultiConverter x:Key="UserConverter"/>
+        <vm:IndexConverter x:Key="IndexConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -18,18 +75,19 @@
                 <!--<DataGridTextColumn ClipboardContentBinding="{x:Null}" Header="№"
                             Binding="{Binding Converter={StaticResource IndexConverter},
                             Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}" />-->
-                <DataGridTextColumn  Header="Windows login" Binding = "{Binding WindowsUserName}"/>
+                <DataGridTextColumn  Header="Логин Windows" Binding = "{Binding WinUserName}"/>
                 <DataGridTextColumn  Header="ФИО" Binding = "{Binding}"/>
-                <DataGridTextColumn  Header="Группа" Binding = "{Binding Group}"/>
+                <DataGridTextColumn  Header="Администратор" Binding = "{Binding IsAdmin}"/>
+                <DataGridTextColumn  Header="Баланс" Binding = "{Binding Balance}"/>
             </DataGrid.Columns>
         </DataGrid>
         <GroupBox Grid.Row="2" Header="Добавление записи">
             <Grid >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100*" MinWidth="200"/>
+                    <ColumnDefinition Width="100*" MinWidth="180"/>
                     <ColumnDefinition Width="125*" MinWidth="250"/>
-                    <ColumnDefinition Width="94*" MinWidth="80"/>
-                    <ColumnDefinition Width="71*" MinWidth="150"/>
+                    <ColumnDefinition Width="94*" MinWidth="200"/>
+                    <ColumnDefinition Width="71*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
@@ -39,7 +97,7 @@
                     <Label Content="Пользователь Windows" />
                 </StackPanel>
                 <StackPanel Grid.Row="1"  Orientation="Horizontal">
-                    <ComboBox  x:Name="cbWinUsers" Height="20" 
+                    <ComboBox  Name="cbWinUsers" Height="20" SelectedIndex="0"
                     ItemsSource="{Binding Path=WinUsers, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
                     SelectedItem="{Binding Path=NewUser.WinUserName}" VerticalAlignment="Top" Margin="0,0,5,0" Width="150"/>
                     <Button VerticalAlignment="Top" HorizontalAlignment="Left" Width="20" Height="20" Content="+"
@@ -48,7 +106,7 @@
                 </StackPanel>
                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal"  HorizontalAlignment="Right" >
                     <Label Content="Имя" Height="25"/>
-                    <TextBox x:Name="txtName" Height="20"
+                    <TextBox x:Name="txtFirstName" Height="20"
                     Text="{Binding Path=NewUser.FirstName, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" VerticalAlignment="Top" Width="150" />
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" >
@@ -56,14 +114,14 @@
                     <TextBox  x:Name="txtLastName" Height="20"
                     Text="{Binding Path=NewUser.LastName, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Margin="0" VerticalAlignment="Top" Width="150"/>
                 </StackPanel>
-                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Margin="10,0,0,0" Grid.ColumnSpan="2" HorizontalAlignment="Left">
-                    <CheckBox Margin="0" IsChecked="{Binding Path=IsAdmin}" IsEnabled="False" VerticalAlignment="Center" ></CheckBox>
+                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" Margin="10,0,0,0" HorizontalAlignment="Left">
+                    <CheckBox Name="chckIsAdmin" IsChecked="{Binding ElementName=cbWinUsers, Path=SelectedValue.IsAdmin}" IsEnabled="False" VerticalAlignment="Center" ></CheckBox>
                     <Label Content="Администратор системы" Height="25" Margin="0" VerticalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Grid.Column="2" Margin="10,0,0,0" >
                     <Label Content="Начальный баланс: " Height="25" Margin="0" VerticalAlignment="Top" />
                     <TextBox  x:Name="txtBalance" Height="20"
-                    Text="{Binding Path=NewUser.Balance, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Margin="0" VerticalAlignment="Top" Width="50"/>
+                    Text="{Binding Path=NewUser.Balance, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" Margin="0,0,0,8" VerticalAlignment="Bottom" Width="50"/>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Grid.Column="3" HorizontalAlignment="Right" Orientation="Horizontal" Margin="10,0,5,0" >
                     <Button Height="20" Width="70" Content="Добавить" HorizontalContentAlignment="Center"
@@ -79,11 +137,13 @@
                                 <Binding ElementName="txtFirstName" Path="(Validation.HasError)" ></Binding>
                                 <Binding ElementName="txtLastName" Path="(Validation.HasError)" ></Binding>
                                 <Binding ElementName="txtBalance" Path="(Validation.HasError)" ></Binding>
+                                <Binding ElementName="chckIsAdmin" Path="(Validation.HasError)" ></Binding>
 
                                 <Binding ElementName="cbWinUsers" Path="SelectedItem" ></Binding>
                                 <Binding ElementName="txtFirstName" Path="Text" ></Binding>
                                 <Binding ElementName="txtLastName" Path="Text" ></Binding>
                                 <Binding ElementName="txtBalance" Path="Text" ></Binding>
+                                <Binding ElementName="chckIsAdmin" Path="IsChecked" ></Binding>
 
                             </MultiBinding>
                         </Button.CommandParameter>

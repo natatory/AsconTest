@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using AccountingSystemUI.ViewModel;
 using AccountingSystemDAL.Model;
 using AccountingSystemDAL.Repos;
+using AccountingSystemUI.Application;
 
 namespace AccountingSystemUI.View
 {
@@ -23,9 +24,9 @@ namespace AccountingSystemUI.View
     public partial class MoneyManagementWindow : Window
     {
         MoneyManagementVM mmVM;
-        public MoneyManagementWindow(IRepo<Category> categoryRepo, IRepo<Recipient> recipientRepo, IRepo<User> userRepo, IRepo<Data> dataRepo, string currentUserName)
+        public MoneyManagementWindow(IRepo<Category> categoryRepo, IRepo<Recipient> recipientRepo, IRepo<User> userRepo, IRepo<Data> dataRepo, IWinAccount currentUser)
         {
-            mmVM = new MoneyManagementVM(categoryRepo, recipientRepo, userRepo, dataRepo, currentUserName);
+            mmVM = new MoneyManagementVM(categoryRepo, recipientRepo, userRepo, dataRepo, currentUser);
             IsEnabled = mmVM.IsFormEnable;
             this.DataContext = mmVM;
             InitializeComponent();

@@ -8,6 +8,7 @@ namespace AccountingSystemDAL.Model
     //idea behind this class is to encapsulate user roles.
     //this will allow to have flexible configuration of access rights
     //for possible new user groups
+    [NotMapped]
     public partial class Group : ModelBase
     {
         [Key]

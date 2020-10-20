@@ -21,7 +21,7 @@ namespace AccountingSystemUI.Cmds
 
         public override void Execute(object parameter)
         {
-            var addUserForm = new AddUserForm(_users, _userRepo);
+            var addUserForm = new AddUserForm(_userRepo, _users);
             addUserForm.ShowDialog();
         }
     }

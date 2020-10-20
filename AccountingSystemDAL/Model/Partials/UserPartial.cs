@@ -44,6 +44,15 @@ namespace AccountingSystemDAL.Model
                         }
                         if (!hasError) ClearErrors(nameof(Balance));
                         break;
+                    case nameof(WinUserName):
+                        errors = GetErrorsFromAnnotations(nameof(WinUserName), WinUserName);
+                        if (errors != null && errors.Length != 0)
+                        {
+                            AddErrors(nameof(WinUserName), errors);
+                            hasError = true;
+                        }
+                        if (!hasError) ClearErrors(nameof(WinUserName));
+                        break;
                 }
                 return string.Empty;
             }

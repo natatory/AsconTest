@@ -28,8 +28,8 @@ namespace AccountingSystemUI.Cmds
 
         public override void Execute(object parameter)
         {
-            var inputUserData = parameter as Data;
-            var resultData = CreateCompliteData(inputUserData);
+            var inputData = parameter as Data;
+            var resultData = CreateCompliteData(inputData);
             _currentUser.Balance = resultData.BalanceAfterTransact;
             try
             {
@@ -64,6 +64,7 @@ namespace AccountingSystemUI.Cmds
                 UserId = _currentUser.UserId,
                 OpType = data.OpType,
                 CategoryId = data.CategoryId,
+                Date = DateTime.Now,
                 RecipientId = data.RecipientId,
                 Description = data.Description,
                 TransactionAmount = data.TransactionAmount,

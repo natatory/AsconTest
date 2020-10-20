@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace AccountingSystemUI.Application
 {
-    public class WinAccount :IWinAccount
+    public interface IWinAccount
     {
-        public string Name { get; set; }
-        public bool IsAdmin { get; set; }
-        public override string ToString() => Name;
+        string Name { get; set; }
+        bool IsAdmin { get; set; }
+        string ToString();
     }
 }

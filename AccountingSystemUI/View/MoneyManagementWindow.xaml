@@ -76,25 +76,27 @@
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" HorizontalAlignment="Left" Width="42">
             <MenuItem Header="_Файл">
-                <MenuItem Visibility="{Binding Path=VisibilityMenuProp}" Header="_Управление пользователями"
+                <MenuItem Visibility="{Binding Path=VisibilityMenu}" Header="_Управление пользователями"
                           Command="{Binding Path=OpenUserManagementForm}"/>
-                <MenuItem Visibility="{Binding Path=VisibilityMenuProp}" Header="_Выгрузить данные в отчет" />
+                <MenuItem Visibility="{Binding Path=VisibilityMenu}" Header="_Выгрузить данные в отчет" />
                 <Separator />
                 <MenuItem Header="_Выход" Click="MenuItem_Click"/>
             </MenuItem>
         </Menu>
         <DataGrid Name="dgTransactions" AutoGenerateColumns="False" Grid.Row="1" IsReadOnly="True"
                   MinHeight="100" ItemsSource="{Binding Path=CurrentUserTransactions}" Margin="0">
+
             <DataGrid.Columns>
-                <DataGridTextColumn ClipboardContentBinding="{x:Null}" Header="№"
+                <!--<DataGridTextColumn ClipboardContentBinding="{x:Null}" Header="№"
                             Binding="{Binding Converter={StaticResource IndexConverter},
-                            Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}" />
+                            Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}" />-->
                 <DataGridTextColumn  Header="Операция" Binding = "{Binding OpType}"/>
                 <DataGridTextColumn  Header="Категория" Binding = "{Binding Category}"/>
                 <DataGridTextColumn  Header="Получатель" Binding = "{Binding Recipient}"/>
                 <DataGridTextColumn  Header="Описание" Binding = "{Binding Description}"/>
                 <DataGridTextColumn  Header="Сумма операции" Binding = "{Binding TransactionAmount}"/>
                 <DataGridTextColumn  Header="Баланс" Binding = "{Binding BalanceAfterTransact}"/>
+                <DataGridTextColumn  Header="Дата" Binding = "{Binding Date, StringFormat='dd.MM.yy (HH:MM)'}"/>
             </DataGrid.Columns>
         </DataGrid>
         <GroupBox Grid.Row="2" Header="Добавление записи">
@@ -117,14 +119,14 @@
                     <ComboBox  x:Name="cbOpType" Height="20" 
                     ItemsSource="{Binding Path=OpTypes, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
                     SelectedItem="{Binding Path=NewData.OpType}" VerticalAlignment="Top" Margin="0,0,15,0" Width="90"/>
-                    <ComboBox x:Name="cbCategory" Height="20" VerticalAlignment="Top" Margin="0,0,5,0"
+                    <ComboBox x:Name="cbCategory" SelectedIndex="0" Height="20" VerticalAlignment="Top" Margin="0,0,5,0"
                     ItemsSource="{Binding Path=Categories, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
                     SelectedItem="{Binding Path=NewData.Category}" Width="90" />
                     <Button VerticalAlignment="Top" HorizontalAlignment="Left" Width="20" Height="20" Content="+"
                             FontWeight="Bold" FontSize="16" Margin="0,0,15,0"  Foreground="#FF1FD828" Padding="1,0"
                             Command="{Binding Path=OpenAddCategoryFormCmd}"
                             Visibility="{Binding Path=VisibilityNewCatBtn}"/>
-                    <ComboBox  x:Name="cbRecipient"  Height="20" 
+                    <ComboBox  x:Name="cbRecipient" SelectedIndex="0" Height="20" 
                     ItemsSource="{Binding Path=Recipients, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
                     SelectedItem="{Binding Path=NewData.Recipient}" VerticalAlignment="Top" Margin="0,0,5,0" Width="90"/>
                     <Button VerticalAlignment="Top" HorizontalAlignment="Left" Width="20" Height="20" Content="+"
@@ -184,7 +186,7 @@
             </StatusBarItem>
             <Separator/>
             <StatusBarItem>
-                <TextBlock Text="Отрицательный баланс!" Foreground="Red" Visibility="{Binding Path=VisibilityBalanceWarningProp}"/>
+                <TextBlock Text="Отрицательный баланс!" Foreground="Red" Visibility="{Binding Path=VisibilityBalanceWarning}"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>

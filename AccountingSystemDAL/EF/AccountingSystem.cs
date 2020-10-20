@@ -26,7 +26,7 @@
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Data> Transactions { get; set; }
         public virtual DbSet<Recipient> Recipients { get; set; }
-        public virtual DbSet<Group> Groups { get; set; }
+        //public virtual DbSet<Group> Groups { get; set; }
 
     }
 

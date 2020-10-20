@@ -16,8 +16,9 @@ namespace AccountingSystemUI.Cmds
 
         public event EventHandler CloseDialog;
 
-        public AddUserCommand( IRepo<User> userRepo, IList<User> users)
+        public AddUserCommand(IRepo<User> userRepo, IList<User> users)
         {
+
             _userRepo = userRepo;
             _users = users;
             CheckNullInputParams(_userRepo, _users);
@@ -25,17 +26,18 @@ namespace AccountingSystemUI.Cmds
 
         public override void Execute(object parameter)
         {
-            var user = parameter as User;
-            if (!IsExist(user))
+            var inputUser = parameter as User;
+            var resultData = CreateCompliteUser(inputUser);
+            if (!IsExist(resultData))
             {
-                _userRepo.Add(user);
-                _users.Add(user);
+                _userRepo.Add(resultData);
+                _users.Add(resultData);
                 CloseDialog?.Invoke(this, new EventArgs());
             }
             else
             {
                 MessageBox.Show(
-                         $"Пользователь \"{user}\"\n" +
+                         $"Пользователь с логином \"{resultData.WinUserName}\"\n" +
                          $"уже содержится в базе\n\n",
                          "Дублирование данных",
                          MessageBoxButton.OK,
@@ -50,6 +52,19 @@ namespace AccountingSystemUI.Cmds
                 && !((User)parameter).HasErrors
                 && _users != null;
         }
+        private User CreateCompliteUser(User user)
+        {
+            return new User
+            {
+                UserId = Guid.NewGuid(),
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                IsAdmin = user.IsAdmin,
+                WinUserName = user.WinUserName,
+                Balance = user.Balance,
+            };
+        }
+
         private void CheckNullInputParams(object catRepo, object categories)
         {
             if (catRepo == null || categories == null)
@@ -65,8 +80,7 @@ namespace AccountingSystemUI.Cmds
         }
         private bool IsExist(User user)
         {
-            //todo: check WinUserName
-            return _users.Any(u => u.FirstName == user.FirstName);
+            return _users.Any(u => u.WinUserName == user.WinUserName);
         }
     }
 }

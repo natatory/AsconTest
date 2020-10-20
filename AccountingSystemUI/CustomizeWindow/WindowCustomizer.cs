@@ -73,7 +73,6 @@ namespace AccountingSystemUI.CustomizeWindow
                     SetWindowLongPtr(hWnd, GWL_STYLE, windowStyle & ~WS_MAXIMIZEBOX);
                 }
             }
-
             /// <summary>
             /// Enables the maximize functionality of a WPF window.
             /// </summary>

@@ -51,7 +51,6 @@ namespace AccountingSystemUI.Cmds
 
                 && !((Recipient)parameter).HasErrors
                 && _recipients != null;
-            //&& _recipients.Count != 0;
         }
         private void CheckNullInputParams(object recipientRepo, object recipients)
         {

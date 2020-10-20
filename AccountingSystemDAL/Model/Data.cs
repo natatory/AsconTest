@@ -20,8 +20,9 @@ namespace AccountingSystemDAL.Model
         [Required]
         public OperationType OpType { get; set; }
         public enum OperationType { Доходы, Расходы }
-        
-        //todo: create field DateTime
+
+        [Required]
+        public DateTime Date { get; set; }
 
         [Required]
         public decimal BalanceAfterTransact { get; set; }
