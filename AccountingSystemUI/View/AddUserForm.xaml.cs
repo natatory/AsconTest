@@ -3,6 +3,7 @@ using System.Windows;
 using AccountingSystemDAL.Model;
 using AccountingSystemUI.ViewModel;
 using AccountingSystemDAL.Repos;
+using System.Windows.Input;
 
 namespace AccountingSystemUI.View
 {
@@ -14,6 +15,7 @@ namespace AccountingSystemUI.View
         private AddUserFormVM _addUserFormVM;
         private IRepo<User> _userRepo;
         private IList<User> _users;
+        private UserDataInfoForm _userDataInfoForm;
         public AddUserForm(IRepo<User> userRepo, IList<User> users)
         {
             _userRepo = userRepo;
@@ -21,6 +23,17 @@ namespace AccountingSystemUI.View
             _addUserFormVM = new AddUserFormVM(_userRepo, _users);
             this.DataContext = _addUserFormVM;
             InitializeComponent();
+        }
+
+
+        private void dgUserTransactions_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var selectedUser = dgUserTransactions.SelectedItem as User;
+            if (selectedUser != null)
+            {
+                _userDataInfoForm = new UserDataInfoForm(selectedUser);
+                _userDataInfoForm.Show();
+            }
         }
     }
 }

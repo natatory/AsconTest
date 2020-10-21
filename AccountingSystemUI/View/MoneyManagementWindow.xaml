@@ -7,7 +7,8 @@
         xmlns:vm="clr-namespace:AccountingSystemUI.ViewModel"
         xmlns:wc="clr-namespace:AccountingSystemUI.CustomizeWindow"
         mc:Ignorable="d"
-        Title="Учет доходов и расходов" Height="450" Width="800"
+        Title=""
+        Height="450" Width="800"
         wc:WindowCustomizer.CanMaximize="False"
         vm:DialogCloser.DialogResult="{Binding Path=DialogResult}">
     <Window.Resources>
@@ -84,7 +85,7 @@
             </MenuItem>
         </Menu>
         <DataGrid Name="dgTransactions" AutoGenerateColumns="False" Grid.Row="1" IsReadOnly="True"
-                  MinHeight="100" ItemsSource="{Binding Path=CurrentUserTransactions}" Margin="0">
+                  MinHeight="100" ItemsSource="{Binding Path=CurrentUserTransactions}" Margin="0" LoadingRow="dgTransactions_LoadingRow">
 
             <DataGrid.Columns>
                 <!--<DataGridTextColumn ClipboardContentBinding="{x:Null}" Header="№"
@@ -186,8 +187,12 @@
             </StatusBarItem>
             <Separator/>
             <StatusBarItem>
-                <TextBlock Text="Отрицательный баланс!" Foreground="Red" Visibility="{Binding Path=VisibilityBalanceWarning}"/>
+                <TextBlock Name="txtWarningBalance" Text="Отрицательный баланс!" Foreground="Red" Visibility="{Binding Path=VisibilityBalanceWarning}" />
             </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="Подключение к базе данных отсутсвует" Foreground="Red" Visibility="{Binding Path=VisibilityConnectDBWarning}" />
+            </StatusBarItem>
+
         </StatusBar>
     </Grid>
 </Window>

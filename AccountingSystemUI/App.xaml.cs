@@ -1,16 +1,8 @@
-﻿using AccountingSystemUI.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
-using System.Security.Principal;
 using AccountingSystemUI.View;
 using AccountingSystemDAL.Repos;
 using AccountingSystemDAL.Model;
-using AccountingSystemUI.Application;
 using AccountingSystemUI.Application;
 
 namespace AccountingSystemUI
@@ -18,36 +10,88 @@ namespace AccountingSystemUI
     /// <summary>
     /// Логика взаимодействия для App.xaml
     /// </summary>
-    public partial class App: System.Windows.Application
+    public partial class App : System.Windows.Application
     {
-        MoneyManagementWindow moneyManagementWindow;
-        IRepo<Category> _categoryRepo;
-        IRepo<Recipient> _recipientRepo;
-        IRepo<User> _userRepo;
-        IRepo<Data> _dataRepo;
-        IWinAccount _currentUser;
+        StartWindow startWindow;
+        //MoneyManagementWindow moneyManagementWindow;
+        //IRepo<Category> _categoryRepo;
+        //IRepo<Recipient> _recipientRepo;
+        //IRepo<User> _userRepo;
+        //IRepo<Data> _dataRepo;
+        //IWinAccount _currentUser;
 
-        //App()
-        //{
-        //AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
-        //M1 mw = new M1();
-        //
-        //}
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
-            _categoryRepo =  new CategoryRepo();
-            _recipientRepo = new RecipientRepo();
-            _userRepo =  new UserRepo();
-            _dataRepo = new DataRepo();
-            _currentUser = WinHelper.GetCurrentWinAccount();
-            moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser);
-            Current.MainWindow = moneyManagementWindow;
-            moneyManagementWindow.Show();
+            //App.Current.MainWindow = moneyManagementWindow;
+            App.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            startWindow = new StartWindow();
+            startWindow.Show();
 
-        }
-        private void App_OnExit(object sender, ExitEventArgs e)
-        {
-            //Application.Current.Shutdown();
+            //App.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            //App.Current.MainWindow = moneyManagementWindow;
+            //appGeneral = new AppGeneral(moneyManagementWindow);
+            //appGeneral.Configure();
+            //    _currentUser = WinHelper.GetCurrentWinAccount();
+            //    if (_currentUser == null)
+            //    {
+            //        MessageBox.Show("Ошибка идентификации пользователя\n" +
+            //                "Продолжение невозможно",
+            //                "Ошибка",
+            //                 MessageBoxButton.OK,
+            //                 MessageBoxImage.Error);
+            //        //App.Current.Shutdown();
+            //        return;
+            //    }
+            //    if (_currentUser.IsAdmin)
+            //    {
+            //        //DataInitializer (EF subsystem) class will recreate and optionally re-seed
+            //        //the database only if the database does not exist.
+            //        try
+            //        {
+            //            _categoryRepo = new CategoryRepo();
+            //            _recipientRepo = new RecipientRepo();
+            //            _userRepo = new UserRepo();
+            //            _dataRepo = new DataRepo();
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            MessageBox.Show(ex.Message + "\nПродолжение невозможно");
+            //            //App.Current.Shutdown();
+            //            return;
+            //        }
+            //        App.Current.Shutdown();
+            //        //try (just in case) to set access right read/write db for user-group accounts
+            //        DBInteract.SetAccessRights("AccountingSystem");
+            //        moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser);
+            //    }
+            //    else
+            //    {
+            //        if (DBInteract.IsDBExist("AccountingSystem")) //connectionString now is hardcodet in DBInteract
+            //        {
+            //            //for user-account just create entities from existing db
+            //            try
+            //            {
+            //                _categoryRepo = new CategoryRepo();
+            //                _recipientRepo = new RecipientRepo();
+            //                _userRepo = new UserRepo();
+            //                _dataRepo = new DataRepo();
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                MessageBox.Show(ex.Message + "\nПродолжение невозможно");
+            //                //App.Current.Shutdown();
+            //                return;
+            //            }
+            //            moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser);
+            //        }
+            //        //user-accounts have no authority to create a database
+            //        else moneyManagementWindow = new MoneyManagementWindow(_currentUser);
+            //    }
+
+            //    moneyManagementWindow.Show();
+
         }
     }
 }
+
+

@@ -7,7 +7,6 @@
         xmlns:local="clr-namespace:AccountingSystemUI.View"
         mc:Ignorable="d"
         Title="Управление пользователями" Height="452" Width="800"
-        ResizeMode="NoResize"
         vm:DialogCloser.DialogResult="{Binding Path=DialogResult}" >
     <Window.Resources>
         <Style TargetType="{x:Type TextBox}">
@@ -69,8 +68,8 @@
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
 
-        <DataGrid  AutoGenerateColumns="False" Grid.Row="0" IsReadOnly="True"
-                  MinHeight="100" ItemsSource="{Binding Path=Users}" Margin="0">
+        <DataGrid Name="dgUserTransactions" AutoGenerateColumns="False" Grid.Row="0" IsReadOnly="True"
+                  MinHeight="100" ItemsSource="{Binding Path=Users}" Margin="0" MouseDoubleClick="dgUserTransactions_MouseDoubleClick">
             <DataGrid.Columns>
                 <!--<DataGridTextColumn ClipboardContentBinding="{x:Null}" Header="№"
                             Binding="{Binding Converter={StaticResource IndexConverter},

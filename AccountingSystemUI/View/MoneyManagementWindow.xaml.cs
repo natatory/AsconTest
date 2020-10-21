@@ -27,7 +27,12 @@ namespace AccountingSystemUI.View
         public MoneyManagementWindow(IRepo<Category> categoryRepo, IRepo<Recipient> recipientRepo, IRepo<User> userRepo, IRepo<Data> dataRepo, IWinAccount currentUser)
         {
             mmVM = new MoneyManagementVM(categoryRepo, recipientRepo, userRepo, dataRepo, currentUser);
-            IsEnabled = mmVM.IsFormEnable;
+            this.DataContext = mmVM;
+            InitializeComponent();
+        }
+        public MoneyManagementWindow(IWinAccount currentUser)
+        {
+            mmVM = new MoneyManagementVM(currentUser);
             this.DataContext = mmVM;
             InitializeComponent();
         }
@@ -36,5 +41,13 @@ namespace AccountingSystemUI.View
         {
             Close();
         }
+
+        private void dgTransactions_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            if (e.Row.Item is Data)
+                txtWarningBalance.Visibility = ((Data)e.Row.Item).BalanceAfterTransact < 0 ?
+                    Visibility.Visible : Visibility.Hidden;
+        }
+
     }
 }
