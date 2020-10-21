@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using AccountingSystemUI.ViewModel;
+using System.Collections.Generic;
 
 namespace AccountingSystemUI.View
 {
@@ -11,27 +12,28 @@ namespace AccountingSystemUI.View
     public partial class StartWindow : Window
     {
         StartWindowVM startWindowVM;
+        IList<string> msgs;
 
         public StartWindow()
         {
             startWindowVM = new StartWindowVM();
             this.DataContext = startWindowVM;
-
+            msgs = startWindowVM.Messages;
             InitializeComponent();
             //
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            App.Current.Shutdown();
+            Close();
         }
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //Dispatcher.Invoke(StartAcync);
-            //startWindowVM.Start();
-            StartAcync();
+            //StartAcync();
+            startWindowVM.Start();
+            lstbxMsg.ItemsSource = msgs;
         }
 
         private async void StartAcync()

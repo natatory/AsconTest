@@ -14,7 +14,7 @@ using AccountingSystemUI.Cmds;
 using System.Dynamic;
 using System.ComponentModel;
 using AccountingSystemUI.Application;
-//using Microsoft.Office.Interop.Excel;
+
 
 namespace AccountingSystemUI.ViewModel
 {
@@ -85,6 +85,9 @@ namespace AccountingSystemUI.ViewModel
         public ICommand OpenUserManagementForm =>
                 _openUserManagementForm ?? (_openUserManagementForm = new OpenUserManagementFormCommand(Users, UserRepo));
 
+        private ICommand _excelExport = null;
+        public ICommand ExcelExport =>
+                _excelExport ?? (_excelExport = new ExcelExportCommand());
 
         private void UserInit(IWinAccount currentUser)
         {

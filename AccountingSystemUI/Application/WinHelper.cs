@@ -2,20 +2,11 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.IO.Packaging;
-using System.Windows.Input;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Threading;
 using System.DirectoryServices.AccountManagement;
 using System.Security.Principal;
 using System.DirectoryServices;
-using System.Security.Permissions;
-using Microsoft.Office.Interop.Excel;
+
 
 
 namespace AccountingSystemUI.Application

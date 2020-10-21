@@ -79,7 +79,8 @@
             <MenuItem Header="_Файл">
                 <MenuItem Visibility="{Binding Path=VisibilityMenu}" Header="_Управление пользователями"
                           Command="{Binding Path=OpenUserManagementForm}"/>
-                <MenuItem Visibility="{Binding Path=VisibilityMenu}" Header="_Выгрузить данные в отчет" />
+                <MenuItem Visibility="{Binding Path=VisibilityMenu}" Header="_Выгрузить данные в отчет" 
+                          Command="{Binding Path=ExcelExport}" CommandParameter="{Binding Path=CurrentUser}"/>
                 <Separator />
                 <MenuItem Header="_Выход" Click="MenuItem_Click"/>
             </MenuItem>

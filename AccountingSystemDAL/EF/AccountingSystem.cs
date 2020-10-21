@@ -1,8 +1,6 @@
 ﻿namespace AccountingSystemDAL.EF
 {
-    using System;
     using System.Data.Entity;
-    using System.Linq;
     using AccountingSystemDAL.Model;
 
     public class AccountingSystem : DbContext

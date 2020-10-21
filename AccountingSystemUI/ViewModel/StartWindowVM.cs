@@ -24,7 +24,6 @@ using System.Threading;
 
 namespace AccountingSystemUI.ViewModel
 {
-    [AddINotifyPropertyChangedInterface]
     class StartWindowVM
     {
         IRepo<Category> _categoryRepo;
@@ -41,81 +40,73 @@ namespace AccountingSystemUI.ViewModel
             Messages = new ObservableCollection<string>();
         }
 
-        public void Start1()
+
+        public void Start()
         {
-            ThreadPool.QueueUserWorkItem(
-                op =>
+            _currentUser = WinHelper.GetCurrentWinAccount();
+            if (_currentUser == null)
+            {
+                Messages.Add("Ошибка идентификации пользователя. Останов");
+                return;
+            }
+            if (_currentUser.IsAdmin)
+            {
+                //DataInitializer (EF subsystem) class will recreate and optionally re-seed
+                //the database only if the database does not exist.
+                Messages.Add("Создание/подключение к БД..");
+                try
                 {
-                    
-                });
+                    _categoryRepo = new CategoryRepo();
+                    _recipientRepo = new RecipientRepo();
+                    _userRepo = new UserRepo();
+                    _dataRepo = new DataRepo();
+                }
+                catch (Exception ex)
+                {
+                    Messages.Add(ex.Message);
+                    //App.Current.Shutdown();
+                    return;
+                }
+                Messages.Add("Успешно!");
+                //try (just in case) to set access right read/write db for user-group accounts
+                DBInteract.SetAccessRights("AccountingSystem");
+
+                moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser);
+            }
+            else
+            {
+                Messages.Add("Подключение к БД..");
+                if (DBInteract.IsDBExist("AccountingSystem")) //connectionString now is hardcodet in DBInteract
+                {
+                    //for user-account just create entities from existing db
+                    try
+                    {
+                        _categoryRepo = new CategoryRepo();
+                        _recipientRepo = new RecipientRepo();
+                        _userRepo = new UserRepo();
+                        _dataRepo = new DataRepo();
+                    }
+                    catch (Exception ex)
+                    {
+                        Messages.Add(ex.Message);
+                        return;
+                    }
+                    Messages.Add("Успешно!");
+                    moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser);
+                }
+
+                //user-accounts have no authority to create a database
+                else
+                {
+                    Messages.Add("Ошибка подключения. Гостевой вход.");
+                    moneyManagementWindow = new MoneyManagementWindow(_currentUser);
+                }
+            }
+            Messages.Add("Запуск");
+            App.Current.MainWindow = moneyManagementWindow;
+            moneyManagementWindow.Show();
+
+            //DialogResult = true;
         }
-
-         
-
-        //public void Start()
-        //{
-        //    _currentUser = WinHelper.GetCurrentWinAccount();
-        //    if (_currentUser == null)
-        //    {
-        //        MessageBox.Show("Ошибка идентификации пользователя\n" +
-        //                "Продолжение невозможно",
-        //                "Ошибка",
-        //                 MessageBoxButton.OK,
-        //                 MessageBoxImage.Error);
-        //        //App.Current.Shutdown();
-        //        return;
-        //    }
-        //    if (_currentUser.IsAdmin)
-        //    {
-        //        //DataInitializer (EF subsystem) class will recreate and optionally re-seed
-        //        //the database only if the database does not exist.
-        //        Messages.Add("Создание/подключение к БД..");
-        //        try
-        //        {
-        //            _categoryRepo = new CategoryRepo();
-        //            _recipientRepo = new RecipientRepo();
-        //            _userRepo = new UserRepo();
-        //            _dataRepo = new DataRepo();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show(ex.Message + "\nПродолжение невозможно");
-        //            //App.Current.Shutdown();
-        //            return;
-        //        }
-        //        Messages.Add("Успешно!");
-        //        //try (just in case) to set access right read/write db for user-group accounts
-        //        DBInteract.SetAccessRights("AccountingSystem");
-        //        moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser);
-        //    }
-        //    else
-        //    {
-        //        if (DBInteract.IsDBExist("AccountingSystem")) //connectionString now is hardcodet in DBInteract
-        //        {
-        //            //for user-account just create entities from existing db
-        //            try
-        //            {
-        //                _categoryRepo = new CategoryRepo();
-        //                _recipientRepo = new RecipientRepo();
-        //                _userRepo = new UserRepo();
-        //                _dataRepo = new DataRepo();
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                MessageBox.Show(ex.Message + "\nПродолжение невозможно");
-        //                //App.Current.Shutdown();
-        //                return;
-        //            }
-        //            moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser);
-        //        }
-        //        //user-accounts have no authority to create a database
-        //        else moneyManagementWindow = new MoneyManagementWindow(_currentUser);
-        //    }
-        //    Messages.Add("Запуск");
-        //    App.Current.MainWindow = moneyManagementWindow;
-        //    moneyManagementWindow.Show();
-
-        //    //DialogResult = true;
-        //}
     }
 }
