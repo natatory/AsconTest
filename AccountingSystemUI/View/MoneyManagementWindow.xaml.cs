@@ -42,12 +42,6 @@ namespace AccountingSystemUI.View
             Close();
         }
 
-        private void dgTransactions_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            if (e.Row.Item is Data)
-                txtWarningBalance.Visibility = ((Data)e.Row.Item).BalanceAfterTransact < 0 ?
-                    Visibility.Visible : Visibility.Hidden;
-        }
 
     }
 }

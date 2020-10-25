@@ -9,7 +9,7 @@
         ResizeMode="NoResize"
         Title="Учет расходов и доходов: лог старта"
         Height="270" Width="300"
-        vm:DialogCloser.DialogResult="{Binding Path=DialogResult}"
+       
         Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -19,7 +19,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Grid.Column="0" Margin="5">
-            <ListBox Name="lstbxMsg" BorderThickness="0" DockPanel.Dock="Top"/>
+            <ListBox Name="lstbxMsg" BorderThickness="0" DockPanel.Dock="Top" ItemsSource="{Binding Path=Messages}"/>
             <Button DockPanel.Dock="Bottom" Content="Закрыть" Width="60" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,10" Click="Button_Click" />
         </DockPanel>
     </Grid>

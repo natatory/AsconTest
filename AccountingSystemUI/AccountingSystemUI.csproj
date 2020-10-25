@@ -141,6 +141,7 @@
     <Compile Include="ViewModel\DataMultiConverter.cs" />
     <Compile Include="ViewModel\DialogCloser.cs" />
     <Compile Include="ViewModel\MoneyManagementVM.cs" />
+    <Compile Include="ViewModel\PositiveToCollapseConverter.cs" />
     <Compile Include="ViewModel\RecipientConverter.cs" />
     <Compile Include="ViewModel\StartWindowVM.cs" />
     <Compile Include="ViewModel\UserMultiConverter.cs" />

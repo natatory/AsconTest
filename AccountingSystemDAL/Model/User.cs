@@ -23,12 +23,6 @@ namespace AccountingSystemDAL.Model
         [Required]
         public bool IsAdmin { get; set; }
 
-        //[Required]
-        //public Guid GroupId { get; set; }
-
-        //[ForeignKey("GroupId")]
-        //public virtual Group Group { get; set; }
-
         [Required]
         public string WinUserName { get; set; }
         public virtual ICollection<Data> Transactions { get; set; } = new HashSet<Data>();

@@ -12,13 +12,11 @@ namespace AccountingSystemUI.View
     public partial class StartWindow : Window
     {
         StartWindowVM startWindowVM;
-        IList<string> msgs;
 
         public StartWindow()
         {
             startWindowVM = new StartWindowVM();
             this.DataContext = startWindowVM;
-            msgs = startWindowVM.Messages;
             InitializeComponent();
             //
         }
@@ -31,15 +29,9 @@ namespace AccountingSystemUI.View
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //StartAcync();
             startWindowVM.Start();
-            lstbxMsg.ItemsSource = msgs;
         }
 
-        private async void StartAcync()
-        {
-            await Task.Run(() => startWindowVM.Start());
-        }
 
     }
 }

@@ -25,7 +25,7 @@ namespace AccountingSystemUI.Cmds
                 {
                     MessageBox.Show(ex.Message);
                 }
-                MessageBox.Show($"Отчет сохранен в папке {Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\nn" +
+                MessageBox.Show($"Отчет сохранен в папке {Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\n\n" +
                     $"Файл Отчет_{name}.xlsx");
             }
         }
