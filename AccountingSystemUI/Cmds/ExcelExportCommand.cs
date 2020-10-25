@@ -22,7 +22,10 @@ namespace AccountingSystemUI.Cmds
         {
             var currentUser = parameter as User;
             var transactions = ExstractTargetFieldsFromData(currentUser.Transactions.ToList());
-            Task.Run(() => ExcelExporter.ExportToFile(currentUser.ToString(), transactions));
+            Task.Factory.StartNew(() =>
+            {
+                ExcelExporter.ExportToFile(currentUser.ToString(), transactions);
+            });
         }
         private List<DataForExport> ExstractTargetFieldsFromData(IList<Data> listData)
         {

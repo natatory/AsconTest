@@ -63,11 +63,9 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\Data.cs" />
-    <Compile Include="Model\Group.cs" />
     <Compile Include="Model\ModelBase.cs" />
     <Compile Include="Model\Partials\DataPartial.cs" />
     <Compile Include="Model\Partials\CategoryPartial.cs" />
-    <Compile Include="Model\Partials\GroupPartial.cs" />
     <Compile Include="Model\Partials\RecipientPartial.cs" />
     <Compile Include="Model\Partials\UserPartial.cs" />
     <Compile Include="Model\Recipient.cs" />
@@ -76,7 +74,6 @@
     <Compile Include="Repos\BaseRepo.cs" />
     <Compile Include="Repos\CategoryRepo.cs" />
     <Compile Include="Repos\DataRepo.cs" />
-    <Compile Include="Repos\GroupRepo.cs" />
     <Compile Include="Repos\IRepo.cs" />
     <Compile Include="Repos\RecipientRepo.cs" />
     <Compile Include="Repos\UserRepo.cs" />
