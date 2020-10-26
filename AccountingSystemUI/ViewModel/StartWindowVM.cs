@@ -35,10 +35,7 @@ namespace AccountingSystemUI.ViewModel
 
         void AddMsg(string msg)
         {
-            App.Current.Dispatcher.Invoke(delegate
-            {
-                Messages.Add(msg);
-            });
+            App.Current.Dispatcher.Invoke(() => Messages.Add(msg));
         }
 
         public void StartAsync()
@@ -70,11 +67,9 @@ namespace AccountingSystemUI.ViewModel
                 //try (just in case) to set access right read/write db for user-group accounts
                 DBInteract.SetAccessRights("AccountingSystem");
 
-                App.Current.Dispatcher.Invoke(delegate
-                {
-                    moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser);
-
-                });
+                App.Current.Dispatcher.Invoke(() =>
+                              moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser)
+                );
             }
             else
             {
@@ -91,30 +86,27 @@ namespace AccountingSystemUI.ViewModel
                     }
                     catch (Exception ex)
                     {
-                        Messages.Add(ex.Message);
+                        AddMsg(ex.Message);
                         return;
                     }
                     AddMsg("Успешно!");
-                    App.Current.Dispatcher.Invoke(delegate
-                    {
-                        moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser);
-                    });
+                    App.Current.Dispatcher.Invoke(() =>
+                               moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser)
+                    );
                 }
 
                 //user-accounts have no authority to create a database
                 else
                 {
                     AddMsg("Ошибка подключения. Гостевой вход.");
-                    App.Current.Dispatcher.Invoke(delegate
-                    {
-                        moneyManagementWindow = new MoneyManagementWindow(_currentUser);
-
-                    });
+                    App.Current.Dispatcher.Invoke(() =>
+                                moneyManagementWindow = new MoneyManagementWindow(_currentUser)
+                    );
                 }
             }
             AddMsg("Запуск");
-            
-            App.Current.Dispatcher.Invoke(delegate
+
+            App.Current.Dispatcher.Invoke(() =>
             {
                 App.Current.MainWindow = moneyManagementWindow;
                 moneyManagementWindow.Show();
