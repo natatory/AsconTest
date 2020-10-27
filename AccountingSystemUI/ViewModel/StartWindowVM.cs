@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AccountingSystemUI.View;
-using AccountingSystemDAL.Repos;
-using AccountingSystemDAL.Model;
 using AccountingSystemUI.Application;
 using System.Collections.ObjectModel;
+using AccountingSystemUI.DI;
 
 
 namespace AccountingSystemUI.ViewModel
 {
     class StartWindowVM
     {
-        IRepo<Category> _categoryRepo;
-        IRepo<Recipient> _recipientRepo;
-        IRepo<User> _userRepo;
-        IRepo<Data> _dataRepo;
         IWinAccount _currentUser;
+        IDBInteract _dbInteract;
+        private readonly IFactory _factory;
         MoneyManagementWindow moneyManagementWindow;
+        bool _guest = false;
         public IList<string> Messages { get; set; }
 
-        public StartWindowVM()
+        public StartWindowVM(IFactory factory)
         {
+            _factory = factory;
+            _currentUser = _factory.CreateWinHelper().GetCurrentWinAccount();
+            _dbInteract = _factory.CreateDBInteract();
             Messages = new ObservableCollection<string>();
         }
 
@@ -40,7 +41,6 @@ namespace AccountingSystemUI.ViewModel
 
         public void StartAsync()
         {
-            _currentUser = WinHelper.GetCurrentWinAccount();
             if (_currentUser == null)
             {
                 AddMsg("Ошибка идентификации пользователя. Останов");
@@ -53,10 +53,7 @@ namespace AccountingSystemUI.ViewModel
                 AddMsg("Создание/подключение к БД..");
                 try
                 {
-                    _categoryRepo = new CategoryRepo();
-                    _recipientRepo = new RecipientRepo();
-                    _userRepo = new UserRepo();
-                    _dataRepo = new DataRepo();
+                    GetReposFromFactory();
                 }
                 catch (Exception ex)
                 {
@@ -65,24 +62,17 @@ namespace AccountingSystemUI.ViewModel
                 }
                 AddMsg("Успешно!");
                 //try (just in case) to set access right read/write db for user-group accounts
-                DBInteract.SetAccessRights("AccountingSystem");
-
-                App.Current.Dispatcher.Invoke(() =>
-                              moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser)
-                );
+                _dbInteract.SetAccessRights("AccountingSystem");
             }
             else
             {
                 AddMsg("Подключение к БД..");
-                if (DBInteract.IsDBExist("AccountingSystem")) //connectionString now is hardcodet in DBInteract
+                if (_dbInteract.IsDBExist("AccountingSystem")) //connectionString now is hardcodet in DBInteract
                 {
                     //for user-account just create entities from existing db
                     try
                     {
-                        _categoryRepo = new CategoryRepo();
-                        _recipientRepo = new RecipientRepo();
-                        _userRepo = new UserRepo();
-                        _dataRepo = new DataRepo();
+                        GetReposFromFactory();
                     }
                     catch (Exception ex)
                     {
@@ -90,18 +80,13 @@ namespace AccountingSystemUI.ViewModel
                         return;
                     }
                     AddMsg("Успешно!");
-                    App.Current.Dispatcher.Invoke(() =>
-                               moneyManagementWindow = new MoneyManagementWindow(_categoryRepo, _recipientRepo, _userRepo, _dataRepo, _currentUser)
-                    );
                 }
 
                 //user-accounts have no authority to create a database
                 else
                 {
                     AddMsg("Ошибка подключения. Гостевой вход.");
-                    App.Current.Dispatcher.Invoke(() =>
-                                moneyManagementWindow = new MoneyManagementWindow(_currentUser)
-                    );
+                    _guest = true;
                 }
             }
             AddMsg("Запуск");
@@ -109,8 +94,17 @@ namespace AccountingSystemUI.ViewModel
             App.Current.Dispatcher.Invoke(() =>
             {
                 App.Current.MainWindow = moneyManagementWindow;
+                moneyManagementWindow = new MoneyManagementWindow(_factory, _guest);
                 moneyManagementWindow.Show();
             });
+        }
+
+        private void GetReposFromFactory()
+        {
+            _factory.CreateCategoryRepo();
+            _factory.CreateRecipientRepo();
+            _factory.CreateUserRepo();
+            _factory.CreateDataRepo();
         }
     }
 }

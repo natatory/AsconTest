@@ -5,6 +5,7 @@ using System.Windows;
 using System.Linq;
 using System;
 using System.Windows.Input;
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.Cmds
 {
@@ -14,13 +15,15 @@ namespace AccountingSystemUI.Cmds
 
         private IList<User> _users;
 
+        private readonly IFactory _factory;
+
         public event EventHandler CloseDialog;
 
-        public AddUserCommand(IRepo<User> userRepo, IList<User> users)
+        public AddUserCommand(IFactory factory)
         {
-
-            _userRepo = userRepo;
-            _users = users;
+            _factory = factory;
+            _userRepo = _factory.CreateUserRepo();
+            _users = _factory.CreateUserObservableCollection();
             CheckNullInputParams(_userRepo, _users);
         }
 

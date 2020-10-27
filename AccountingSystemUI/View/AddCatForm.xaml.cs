@@ -3,6 +3,7 @@ using System.Windows;
 using AccountingSystemDAL.Model;
 using AccountingSystemUI.ViewModel;
 using AccountingSystemDAL.Repos;
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.View
 {
@@ -12,14 +13,12 @@ namespace AccountingSystemUI.View
     public partial class AddCatForm : Window
     {
         private AddCatFormVM addCatFormVM;
-        private IList<Category> _categories;
-        private IRepo<Category> _catRepo;
+        private readonly IFactory _factory;
 
-        public AddCatForm(IList<Category> categories, IRepo<Category> catRepo)
+        public AddCatForm(IFactory factory)
         {
-            _categories = categories;
-            _catRepo = catRepo;
-            addCatFormVM = new AddCatFormVM(_categories, _catRepo);
+            _factory = factory;
+            addCatFormVM = new AddCatFormVM(_factory);
             this.DataContext = addCatFormVM;
             InitializeComponent();
         }

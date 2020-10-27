@@ -6,12 +6,17 @@ using System.Threading.Tasks;
 using AccountingSystemDAL.Model;
 using System.Data;
 using AccountingSystemUI.Application;
-
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.Cmds
 {
     public class ExcelExportCommand : CommandBase
     {
+        IExcelExporter _excelExporter;
+        public ExcelExportCommand(IFactory factrory)
+        {
+            _excelExporter = factrory.CreateExcelExporter();
+        }
         public override bool CanExecute(object parameter)
         {
             return (parameter as User) != null
@@ -24,10 +29,10 @@ namespace AccountingSystemUI.Cmds
             var transactions = ExstractTargetFieldsFromData(currentUser.Transactions.ToList());
             Task.Factory.StartNew(() =>
             {
-                ExcelExporter.ExportToFile(currentUser.ToString(), transactions);
+                _excelExporter.ExportToFile(currentUser.ToString(), transactions);
             });
         }
-        private List<DataForExport> ExstractTargetFieldsFromData(IList<Data> listData)
+        private IList<IDataForExport> ExstractTargetFieldsFromData(IList<Data> listData)
         {
             var result = new List<DataForExport>();
             foreach (var d in listData)
@@ -43,7 +48,7 @@ namespace AccountingSystemUI.Cmds
                     Date = d.Date.ToString()
                 });
             }
-            return result;
+            return result as IList<IDataForExport>;
         }
     }
 }

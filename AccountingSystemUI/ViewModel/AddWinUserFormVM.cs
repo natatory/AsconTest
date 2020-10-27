@@ -9,6 +9,7 @@ using PropertyChanged;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows;
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.ViewModel
 {
@@ -16,11 +17,13 @@ namespace AccountingSystemUI.ViewModel
     class AddWinUserFormVM
     {
         IList<IWinAccount> _winUsers;
+        private readonly IFactory _factory;
         public bool? DialogResult { get; set; }
         public IWinAccount NewWinUser { get; set; }
-        public AddWinUserFormVM(IList<IWinAccount> winUsers)
+        public AddWinUserFormVM(IList<IWinAccount> winUsers, IFactory factory)
         {
             _winUsers = winUsers;
+            _factory = factory;
             NewWinUser = CreateNewWinUser();
             CloseAddDialogEventSubscribe();
         }
@@ -37,7 +40,7 @@ namespace AccountingSystemUI.ViewModel
 
         private ICommand _addWinUserCmd = null;
         public ICommand AddWinUserCmd =>
-             _addWinUserCmd ?? (_addWinUserCmd = new AddWinUserCommand(_winUsers));
+             _addWinUserCmd ?? (_addWinUserCmd = new AddWinUserCommand(_winUsers, _factory));
 
 
         private void CloseAddDialogEventSubscribe()

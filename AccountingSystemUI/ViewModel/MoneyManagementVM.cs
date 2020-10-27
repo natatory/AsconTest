@@ -11,7 +11,7 @@ using AccountingSystemDAL.Model;
 using AccountingSystemDAL.Repos;
 using System.Collections.ObjectModel;
 using AccountingSystemUI.Cmds;
-using System.Dynamic;
+using AccountingSystemUI.DI;
 using System.ComponentModel;
 using AccountingSystemUI.Application;
 
@@ -22,13 +22,8 @@ namespace AccountingSystemUI.ViewModel
     {
 
         public Visibility VisibilityMenu { get; set; } = Visibility.Collapsed;
-        public Visibility VisibilityBalanceWarning { get; set; } = Visibility.Hidden;
         public Visibility VisibilityNewCatBtn { get; set; } = Visibility.Hidden;
-        public Visibility VisibilityConnectDBWarning  { get; set; } = Visibility.Hidden;
-        public IRepo<Category> CategoryRepo { get; }
-        public IRepo<Recipient> RecipientRepo { get; }
-        public IRepo<User> UserRepo { get; }
-        public IRepo<Data> DataRepo { get; }
+        public Visibility VisibilityConnectDBWarning { get; set; } = Visibility.Hidden;
         public IList<Category> Categories { get; set; }
         public IList<Recipient> Recipients { get; set; }
         public IList<User> Users { get; set; }
@@ -47,47 +42,47 @@ namespace AccountingSystemUI.ViewModel
         }
         public string Mode { get; set; } = "Пользователь";
 
+        private readonly IFactory _factory;
+
         //todo: DependencyInjection!!
-        public MoneyManagementVM(IRepo<Category> categoryRepo, IRepo<Recipient> recipientRepo, IRepo<User> userRepo, IRepo<Data> dataRepo, IWinAccount currentUser)
+        public MoneyManagementVM(IFactory factory, bool guest)
         {
-            CategoryRepo = categoryRepo;
-            RecipientRepo = recipientRepo;
-            UserRepo = userRepo;
-            DataRepo = dataRepo;
-            Categories = new ObservableCollection<Category>(CategoryRepo.GetAll());
-            Recipients = new ObservableCollection<Recipient>(RecipientRepo.GetAll());
-            Users = new ObservableCollection<User>(UserRepo.GetAll());
-            Transactions = new ObservableCollection<Data>(DataRepo.GetAll());
-            UserInit(currentUser);
-            ConfigureUserInterface(currentUser);
+            _factory = factory;
+            if (!guest)
+            {
+                Categories = _factory.CreateCategoryObservableCollection();
+                Recipients = _factory.CreateRecipientObservableCollection();
+                Users = _factory.CreateUserObservableCollection();
+                Transactions = _factory.CreateDataObservableCollection();
+            }
+            else
+            {
+                VisibilityConnectDBWarning = Visibility.Visible;
+            }
+            UserInit(_factory.CreateWinHelper().GetCurrentWinAccount());
+            ConfigureUserInterface(_factory.CreateWinHelper().GetCurrentWinAccount());
             NewData = GetNewData(CurrentUser);
-        }
-        public MoneyManagementVM(IWinAccount currentUser)
-        {
-            UserInit(currentUser);
-            ConfigureUserInterface(currentUser);
-            VisibilityConnectDBWarning = Visibility.Visible;
         }
 
         private ICommand _openAddCategoryForm = null;
         public ICommand OpenAddCategoryFormCmd =>
-                _openAddCategoryForm ?? (_openAddCategoryForm = new OpenAddCategoryFormCommand(Categories, CategoryRepo));
+                _openAddCategoryForm ?? (_openAddCategoryForm = new OpenAddCategoryFormCommand(_factory));
 
         private ICommand _openAddRecipientForm = null;
         public ICommand OpenAddRecipientFormCmd =>
-                _openAddRecipientForm ?? (_openAddRecipientForm = new OpenAddRecipientFormCommand(Recipients, RecipientRepo));
+                _openAddRecipientForm ?? (_openAddRecipientForm = new OpenAddRecipientFormCommand(_factory));
 
         private ICommand _addData = null;
         public ICommand AddDataCmd =>
-                _addData ?? (_addData = new AddDataCommand(Transactions, DataRepo, _currentUserTransactions, UserRepo, CurrentUser));
+                _addData ?? (_addData = new AddDataCommand(_factory, _currentUserTransactions, CurrentUser));
 
         private ICommand _openUserManagementForm = null;
         public ICommand OpenUserManagementForm =>
-                _openUserManagementForm ?? (_openUserManagementForm = new OpenUserManagementFormCommand(Users, UserRepo));
+                _openUserManagementForm ?? (_openUserManagementForm = new OpenUserManagementFormCommand(_factory));
 
         private ICommand _excelExport = null;
         public ICommand ExcelExport =>
-                _excelExport ?? (_excelExport = new ExcelExportCommand());
+                _excelExport ?? (_excelExport = new ExcelExportCommand(_factory));
 
         private void UserInit(IWinAccount currentUser)
         {
@@ -106,8 +101,6 @@ namespace AccountingSystemUI.ViewModel
                     new ObservableCollection<Data>(CurrentUser.Transactions.OrderBy(x => x.Date))
                     : null;
             }
-
-
         }
         private void ConfigureUserInterface(IWinAccount winAccount)
         {
@@ -118,8 +111,6 @@ namespace AccountingSystemUI.ViewModel
                 VisibilityNewCatBtn = winAccount.IsAdmin ?
                     Visibility.Visible : Visibility.Hidden;
                 Mode = winAccount.IsAdmin ? "Администратор" : "Пользователь";
-                if (CurrentUser != null)
-                    VisibilityBalanceWarning = CurrentUser.Balance < 0 ? Visibility.Visible : Visibility.Hidden;
             }
         }
 

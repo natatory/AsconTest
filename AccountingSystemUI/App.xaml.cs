@@ -4,6 +4,9 @@ using AccountingSystemUI.View;
 using AccountingSystemDAL.Repos;
 using AccountingSystemDAL.Model;
 using AccountingSystemUI.Application;
+using Ninject;
+using AccountingSystemUI.DI;
+using System.Linq;
 
 namespace AccountingSystemUI
 {
@@ -17,7 +20,9 @@ namespace AccountingSystemUI
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
             App.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-            startWindow = new StartWindow();
+            var ninjectKernel = new StandardKernel();
+            ninjectKernel.Load(new CommonModule());
+            startWindow = new StartWindow(ninjectKernel.Get<IFactory>());
             startWindow.Show();
         }
     }

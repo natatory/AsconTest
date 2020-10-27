@@ -9,10 +9,9 @@ using System.Windows;
 
 namespace AccountingSystemUI.Application
 {
-    public class DBInteract
+    public class DBInteract : IDBInteract
     {
-
-        public static bool IsDBExist(string dbName)
+        public bool IsDBExist(string dbName)
         {
             var cString = $"data source=(Local)\\SQLEXPRESS;initial catalog={dbName};integrated security=True;MultipleActiveResultSets=True;App=EntityFramework";
             using (SqlConnection cnn = new SqlConnection(cString))
@@ -29,7 +28,7 @@ namespace AccountingSystemUI.Application
             }
         }
 
-        public static bool SetAccessRights(string dbName)
+        public bool SetAccessRights(string dbName)
         {
             var cString = $"data source=(Local)\\SQLEXPRESS;initial catalog={dbName};integrated security=True;MultipleActiveResultSets=True;App=EntityFramework";
 

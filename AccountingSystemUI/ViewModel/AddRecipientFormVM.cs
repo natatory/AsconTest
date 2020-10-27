@@ -6,6 +6,7 @@ using AccountingSystemDAL.Model;
 using AccountingSystemDAL.Repos;
 using PropertyChanged;
 using System.Linq;
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.ViewModel
 {
@@ -17,10 +18,12 @@ namespace AccountingSystemUI.ViewModel
         private IRepo<Recipient> _recipientRepo;
         public IList<Recipient> Recipients { get; private set; }
         public Recipient NewRecipient { get; private set; }
-        public AddRecipientFormVM(IList<Recipient> recipients, IRepo<Recipient> recipientRepo)
+        private readonly IFactory _factory;
+        public AddRecipientFormVM(IFactory factory)
         {
-            Recipients = recipients;
-            _recipientRepo = recipientRepo;
+            _factory = factory;
+            Recipients = _factory.CreateRecipientObservableCollection(); ;
+            _recipientRepo = _factory.CreateRecipientRepo();
             NewRecipient = GetNewRecipient();
             CloseAddDialogEventSubscribe();
         }
@@ -37,7 +40,7 @@ namespace AccountingSystemUI.ViewModel
         private ICommand _addRecCmd = null;
         public ICommand AddRecCmd =>
 
-             _addRecCmd ?? (_addRecCmd = new AddRecCommand(Recipients, _recipientRepo));
+             _addRecCmd ?? (_addRecCmd = new AddRecCommand(_factory));
 
         private void CloseAddDialogEventSubscribe()
         {

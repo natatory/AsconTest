@@ -7,9 +7,9 @@ using System.Windows;
 
 namespace AccountingSystemUI.Cmds
 {
-    public class ExcelExporter
+    public class ExcelExporter : IExcelExporter
     {
-        public static void ExportToFile(string name, IList<DataForExport> listToExport)
+        public void ExportToFile(string name, IList<IDataForExport> listToExport)
         {
             if (listToExport == null || string.IsNullOrEmpty(name)) return;
             using (var workbook = new XLWorkbook())

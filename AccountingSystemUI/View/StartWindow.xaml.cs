@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using AccountingSystemUI.ViewModel;
 using System.Collections.Generic;
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.View
 {
@@ -12,13 +13,14 @@ namespace AccountingSystemUI.View
     public partial class StartWindow : Window
     {
         StartWindowVM startWindowVM;
+        private readonly IFactory _repoFactory;
 
-        public StartWindow()
+        public StartWindow(IFactory repoFactory)
         {
-            startWindowVM = new StartWindowVM();
+            _repoFactory = repoFactory;
+            startWindowVM = new StartWindowVM(_repoFactory);
             this.DataContext = startWindowVM;
             InitializeComponent();
-            //
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

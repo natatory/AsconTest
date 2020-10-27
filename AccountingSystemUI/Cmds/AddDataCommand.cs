@@ -5,6 +5,7 @@ using System.Windows;
 using System.Linq;
 using System;
 using System.Windows.Input;
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.Cmds
 {
@@ -15,13 +16,15 @@ namespace AccountingSystemUI.Cmds
         private IList<Data> _transactions;
         private IList<Data> _currentUserTransactions;
         private User _currentUser;
+        private readonly IFactory _factory;
 
-        public AddDataCommand(IList<Data> transactions, IRepo<Data> dataRepo, IList<Data> currentUserTransactions, IRepo<User> userRepo, User currentUser)
+        public AddDataCommand(IFactory factory, IList<Data> currentUserTransactions, User currentUser)
         {
+            _factory = factory;
             _currentUser = currentUser;
-            _dataRepo = dataRepo;
-            _transactions = transactions;
-            _userRepo = userRepo;
+            _dataRepo = _factory.CreateDataRepo();
+            _transactions = _factory.CreateDataObservableCollection();
+            _userRepo = _factory.CreateUserRepo();
             _currentUserTransactions = currentUserTransactions;
             CheckNullInputParams(_dataRepo, _transactions);
         }
@@ -73,9 +76,9 @@ namespace AccountingSystemUI.Cmds
                         : _currentUser.Balance + data.TransactionAmount
             };
         }
-        private void CheckNullInputParams(object _dataRepo, object _transactions)
+        private void CheckNullInputParams(object dataRepo, object transactions)
         {
-            if (_dataRepo == null || _transactions == null)
+            if (dataRepo == null || transactions == null)
             {
                 MessageBox.Show(
                          "Непредвиденные данные контекста",

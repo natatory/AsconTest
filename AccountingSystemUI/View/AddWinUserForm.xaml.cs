@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using AccountingSystemUI.Application;
+using AccountingSystemUI.DI;
 using AccountingSystemUI.ViewModel;
 
 namespace AccountingSystemUI.View
@@ -11,11 +12,9 @@ namespace AccountingSystemUI.View
     public partial class AddWinUserForm : Window
     {
         AddWinUserFormVM addWinUserFormVM;
-        IList<IWinAccount> _winUsers;
-        public AddWinUserForm(IList<IWinAccount> winUsers)
+        public AddWinUserForm(IList<IWinAccount> winUsers, IFactory factory)
         {
-            _winUsers = winUsers;
-            addWinUserFormVM = new AddWinUserFormVM(_winUsers);
+            addWinUserFormVM = new AddWinUserFormVM(winUsers, factory);
             this.DataContext = addWinUserFormVM;
             InitializeComponent();
         }

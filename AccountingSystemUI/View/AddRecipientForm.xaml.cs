@@ -3,6 +3,7 @@ using System.Windows;
 using AccountingSystemDAL.Model;
 using AccountingSystemUI.ViewModel;
 using AccountingSystemDAL.Repos;
+using AccountingSystemUI.DI;
 
 
 namespace AccountingSystemUI.View
@@ -13,13 +14,9 @@ namespace AccountingSystemUI.View
     public partial class AddRecipientForm : Window
     {
         private AddRecipientFormVM addRecFormVM;
-        private IList<Recipient> _recipients;
-        private IRepo<Recipient> _recipientRepo;
-        public AddRecipientForm(IList<Recipient> recipients, IRepo<Recipient> recipientRepo)
+        public AddRecipientForm(IFactory factory)
         {
-            _recipients = recipients;
-            _recipientRepo = recipientRepo;
-            addRecFormVM = new AddRecipientFormVM(_recipients, _recipientRepo);
+            addRecFormVM = new AddRecipientFormVM(factory);
             this.DataContext = addRecFormVM;
             InitializeComponent();
     }

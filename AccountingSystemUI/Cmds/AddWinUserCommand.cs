@@ -6,17 +6,23 @@ using System.Linq;
 using System;
 using System.Windows.Input;
 using AccountingSystemUI.Application;
+using AccountingSystemUI.DI;
+using System.Collections.ObjectModel;
 
 namespace AccountingSystemUI.Cmds
 {
     public class AddWinUserCommand : CommandBase
     {
         private IList<IWinAccount> _winUsers;
+        //private IWinHelper _winhelper;
+        private readonly IFactory _factory;
 
         public event EventHandler CloseDialog;
 
-        public AddWinUserCommand(IList<IWinAccount> winUsers)
+        public AddWinUserCommand(IList<IWinAccount> winUsers, IFactory factory)
         {
+            _factory = factory;
+            //_winhelper = _factory.CreateWinHelper();
             _winUsers = winUsers;
             CheckNullInputParams(_winUsers);
         }
@@ -38,7 +44,7 @@ namespace AccountingSystemUI.Cmds
                 var winUserCreated = false;
                 try
                 {
-                    winUserCreated = WinHelper.CreateWinAccount(resultWinUser);
+                    winUserCreated = _factory.CreateWinHelper().CreateWinAccount(resultWinUser);
                 }
                 catch (Exception ex)
                 {

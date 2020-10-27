@@ -4,7 +4,7 @@ using AccountingSystemDAL.Repos;
 using System.Windows;
 using System.Linq;
 using System;
-using System.Windows.Input;
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.Cmds
 {
@@ -15,11 +15,13 @@ namespace AccountingSystemUI.Cmds
         private IList<Category> _categories;
 
         public event EventHandler CloseDialog;
+        private readonly IFactory _factory;
 
-        public AddCatCommand(IList<Category> categories, IRepo<Category> catRepo)
+        public AddCatCommand(IFactory factory)
         {
-            _catRepo = catRepo;
-            _categories = categories;
+            _factory = factory;
+            _catRepo = _factory.CreateCategoryRepo();
+            _categories = _factory.CreateCategoryObservableCollection();
             CheckNullInputParams(_catRepo, _categories);
         }
 
@@ -52,7 +54,6 @@ namespace AccountingSystemUI.Cmds
 
                 && !((Category)parameter).HasErrors
                 && _categories != null;
-            //&& _categories.Count != 0;
         }
         private void CheckNullInputParams(object catRepo, object categories)
         {

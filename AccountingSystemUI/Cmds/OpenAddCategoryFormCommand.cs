@@ -1,5 +1,6 @@
 ﻿using AccountingSystemDAL.Model;
 using AccountingSystemDAL.Repos;
+using AccountingSystemUI.DI;
 using AccountingSystemUI.View;
 using System.Collections.Generic;
 
@@ -9,10 +10,12 @@ namespace AccountingSystemUI.Cmds
     {
         private IList<Category> _categories;
         private IRepo<Category> _catRepo;
-        public OpenAddCategoryFormCommand(IList<Category> categories, IRepo<Category> catRepo)
+        private readonly IFactory _factory;
+        public OpenAddCategoryFormCommand(IFactory factory)
         {
-            _categories = categories;
-            _catRepo = catRepo;
+            _factory = factory;
+            _categories = _factory.CreateCategoryObservableCollection();
+            _catRepo = _factory.CreateCategoryRepo();
         }
         public override bool CanExecute(object parameter)
         {
@@ -21,7 +24,7 @@ namespace AccountingSystemUI.Cmds
 
         public override void Execute(object parameter)
         {
-            var addCatForm = new AddCatForm(_categories, _catRepo);
+            var addCatForm = new AddCatForm(_factory);
             addCatForm.ShowDialog();
         }
     }

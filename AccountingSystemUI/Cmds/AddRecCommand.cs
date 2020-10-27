@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using AccountingSystemDAL.Model;
 using AccountingSystemDAL.Repos;
+using AccountingSystemUI.DI;
 using System.Windows;
 using System;
 using System.Linq;
+
 
 namespace AccountingSystemUI.Cmds
 {
@@ -12,13 +14,15 @@ namespace AccountingSystemUI.Cmds
         private IRepo<Recipient> _recipientRepo;
 
         private IList<Recipient> _recipients;
+        private readonly IFactory _factory;
 
         public event EventHandler CloseDialog;
 
-        public AddRecCommand(IList<Recipient> recipients, IRepo<Recipient> recipientRepo)
+        public AddRecCommand(IFactory factory)
         {
-            _recipientRepo = recipientRepo;
-            _recipients = recipients;
+            _factory = factory;
+            _recipientRepo = _factory.CreateRecipientRepo();
+            _recipients = _factory.CreateRecipientObservableCollection();
             CheckNullInputParams(_recipientRepo, _recipients);
         }
 

@@ -11,13 +11,13 @@ using System.DirectoryServices;
 
 namespace AccountingSystemUI.Application
 {
-    public class WinHelper
+    public class WinHelper : IWinHelper
     {
         /// <summary>
         /// IsAdministrator() apparently not work when UAC is enabled..
         /// </summary>
         /// <returns></returns>
-        private static bool IsAdministrator()
+        private bool IsAdministrator()
         {
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
 
@@ -28,7 +28,7 @@ namespace AccountingSystemUI.Application
             }
             return false;
         }
-        public static IList<IWinAccount> GetWinUsers()
+        public IList<IWinAccount> GetWinUsers()
         {
             IList<IWinAccount> result = new List<IWinAccount>();
 
@@ -42,7 +42,7 @@ namespace AccountingSystemUI.Application
             }
             return result;
         }
-        public static bool CreateWinAccount(IWinAccount winUser)
+        public bool CreateWinAccount(IWinAccount winUser)
         {
             if (winUser == null) return false;
             bool isAdmin = winUser.IsAdmin;
@@ -80,7 +80,7 @@ namespace AccountingSystemUI.Application
             }
             return true;
         }
-        public static IWinAccount GetCurrentWinAccount()
+        public IWinAccount GetCurrentWinAccount()
         {
             var isAdmin = GetAdministrators().Any(x => x.Equals(Environment.UserName)) ?
                  true : false;
@@ -90,7 +90,7 @@ namespace AccountingSystemUI.Application
                 IsAdmin = isAdmin
             };
         }
-        public static IList<string> GetAdministrators()
+        public IList<string> GetAdministrators()
         {
             var result = new List<string>();
             // get correct SidAdminType string for Find method
@@ -107,7 +107,7 @@ namespace AccountingSystemUI.Application
             }
             return result;
         }
-        public static IList<string> GetUsers()
+        public IList<string> GetUsers()
         {
             var result = new List<string>();
             // get correct SidUserType string for Find method
@@ -126,12 +126,12 @@ namespace AccountingSystemUI.Application
             }
             return result;
         }
-        private static string GetSidAdminTypeStr()
+        private string GetSidAdminTypeStr()
         {
             return new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null)
                .Translate(typeof(NTAccount)).ToString();
         }
-        private static string GetSidUserTypeStr()
+        private string GetSidUserTypeStr()
         {
             return new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null)
                .Translate(typeof(NTAccount)).ToString();

@@ -6,6 +6,7 @@ using AccountingSystemDAL.Model;
 using AccountingSystemDAL.Repos;
 using PropertyChanged;
 using System.Linq;
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.ViewModel
 {
@@ -16,11 +17,13 @@ namespace AccountingSystemUI.ViewModel
 
         private IRepo<Category> _catRepo;
         public IList<Category> Categories { get; private set; }
+        private readonly IFactory _factory;
         public Category NewCategory { get; private set; }
-        public AddCatFormVM(IList<Category> categories, IRepo<Category> catRepo)
+        public AddCatFormVM(IFactory factoey)
         {
-            Categories = categories;
-            _catRepo = catRepo;
+            _factory = factoey;
+            Categories = _factory.CreateCategoryObservableCollection();
+            _catRepo = _factory.CreateCategoryRepo();
             NewCategory = GetNewCategory();
             CloseAddDialogEventSubscribe();
         }
@@ -37,7 +40,7 @@ namespace AccountingSystemUI.ViewModel
         private ICommand _addCatCmd = null;
         public ICommand AddCatCmd =>
 
-             _addCatCmd ?? (_addCatCmd = new AddCatCommand(Categories, _catRepo));
+             _addCatCmd ?? (_addCatCmd = new AddCatCommand(_factory));
 
         private void CloseAddDialogEventSubscribe()
         {

@@ -4,6 +4,7 @@ using AccountingSystemDAL.Model;
 using AccountingSystemUI.ViewModel;
 using AccountingSystemDAL.Repos;
 using System.Windows.Input;
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.View
 {
@@ -13,14 +14,12 @@ namespace AccountingSystemUI.View
     public partial class AddUserForm : Window
     {
         private AddUserFormVM _addUserFormVM;
-        private IRepo<User> _userRepo;
-        private IList<User> _users;
         private UserDataInfoForm _userDataInfoForm;
-        public AddUserForm(IRepo<User> userRepo, IList<User> users)
+        private readonly IFactory _factory;
+        public AddUserForm(IFactory factory)
         {
-            _userRepo = userRepo;
-            _users = users;
-            _addUserFormVM = new AddUserFormVM(_userRepo, _users);
+            _factory = factory;
+            _addUserFormVM = new AddUserFormVM(_factory);
             this.DataContext = _addUserFormVM;
             InitializeComponent();
         }

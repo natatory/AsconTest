@@ -1,5 +1,6 @@
 ﻿using AccountingSystemDAL.Model;
 using AccountingSystemDAL.Repos;
+using AccountingSystemUI.DI;
 using AccountingSystemUI.View;
 using System.Collections.Generic;
 
@@ -9,10 +10,12 @@ namespace AccountingSystemUI.Cmds
     {
         private IList<User> _users;
         private IRepo<User> _userRepo;
-        public OpenUserManagementFormCommand(IList<User> users, IRepo<User> userRepo)
+        private readonly IFactory _factory;
+        public OpenUserManagementFormCommand(IFactory factory)
         {
-            _users = users;
-            _userRepo = userRepo;
+            _factory = factory;
+            _users = _factory.CreateUserObservableCollection();
+            _userRepo = _factory.CreateUserRepo();
         }
         public override bool CanExecute(object parameter)
         {
@@ -21,7 +24,7 @@ namespace AccountingSystemUI.Cmds
 
         public override void Execute(object parameter)
         {
-            var addUserForm = new AddUserForm(_userRepo, _users);
+            var addUserForm = new AddUserForm(_factory);
             addUserForm.ShowDialog();
         }
     }

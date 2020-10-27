@@ -9,22 +9,22 @@ using PropertyChanged;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows;
-
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.ViewModel
 {
     [AddINotifyPropertyChangedInterface]
     class AddUserFormVM
     {
-        public IRepo<User> _userRepo;
         public IList<User> Users { get; set; }
         public IList<IWinAccount> WinUsers { get; set; }
         public bool? DialogResult { get; set; }
         public User NewUser { get; set; }
-        public AddUserFormVM(IRepo<User> userRepo, IList<User> users)
+        private readonly IFactory _factory;
+        public AddUserFormVM(IFactory factory)
         {
-            _userRepo = userRepo;
-            Users = users;
+            _factory = factory;
+            Users = _factory.CreateUserObservableCollection();
             WinUsers = GetWinAccounts();
             NewUser = GetNewUser();
         }
@@ -45,7 +45,7 @@ namespace AccountingSystemUI.ViewModel
         {
             try
             {
-                return new ObservableCollection<IWinAccount>(WinHelper.GetWinUsers());
+                return new ObservableCollection<IWinAccount>(_factory.CreateWinHelper().GetWinUsers());
             }
             catch (Exception ex)
             {
@@ -55,7 +55,7 @@ namespace AccountingSystemUI.ViewModel
         }
         private ICommand _addUserCmd = null;
         public ICommand AddUserCmd =>
-             _addUserCmd ?? (_addUserCmd = new AddUserCommand(_userRepo, Users));
+             _addUserCmd ?? (_addUserCmd = new AddUserCommand(_factory));
 
         private ICommand _openAddWinUserFormCmd = null;
         public ICommand OpenAddWinUserFormCmd =>

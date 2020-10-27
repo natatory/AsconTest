@@ -13,7 +13,8 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-            <DataGrid Grid.Row="0" Grid.Column="0" Name="dgTransactions" AutoGenerateColumns="False" Margin="0,0,10,10">
+            <DataGrid Grid.Row="0" Grid.Column="0" Name="dgTransactions" AutoGenerateColumns="False" Margin="0,0,10,10"
+                      ItemsSource="{Binding Path=local.Transactions}">
                 <DataGrid.Columns>
                     <DataGridTextColumn  Header="Операция" Binding = "{Binding OpType}"/>
                     <DataGridTextColumn  Header="Категория" Binding = "{Binding Category}"/>

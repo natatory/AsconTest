@@ -15,6 +15,7 @@ using AccountingSystemUI.ViewModel;
 using AccountingSystemDAL.Model;
 using AccountingSystemDAL.Repos;
 using AccountingSystemUI.Application;
+using AccountingSystemUI.DI;
 
 namespace AccountingSystemUI.View
 {
@@ -24,24 +25,24 @@ namespace AccountingSystemUI.View
     public partial class MoneyManagementWindow : Window
     {
         MoneyManagementVM mmVM;
-        public MoneyManagementWindow(IRepo<Category> categoryRepo, IRepo<Recipient> recipientRepo, IRepo<User> userRepo, IRepo<Data> dataRepo, IWinAccount currentUser)
+        private readonly IFactory _factory;
+        public MoneyManagementWindow(IFactory factory, bool guest)
         {
-            mmVM = new MoneyManagementVM(categoryRepo, recipientRepo, userRepo, dataRepo, currentUser);
+            _factory = factory;
+            mmVM = new MoneyManagementVM(_factory, guest);
             this.DataContext = mmVM;
             InitializeComponent();
         }
-        public MoneyManagementWindow(IWinAccount currentUser)
-        {
-            mmVM = new MoneyManagementVM(currentUser);
-            this.DataContext = mmVM;
-            InitializeComponent();
-        }
+        //public MoneyManagementWindow(IWinAccount currentUser)
+        //{
+        //    mmVM = new MoneyManagementVM(currentUser);
+        //    this.DataContext = mmVM;
+        //    InitializeComponent();
+        //}
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
-
     }
 }
