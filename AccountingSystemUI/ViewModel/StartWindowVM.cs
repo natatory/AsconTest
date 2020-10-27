@@ -5,7 +5,8 @@ using AccountingSystemUI.View;
 using AccountingSystemUI.Application;
 using System.Collections.ObjectModel;
 using AccountingSystemUI.DI;
-
+using AccountingSystemDAL.Repos;
+using AccountingSystemDAL.Model;
 
 namespace AccountingSystemUI.ViewModel
 {
@@ -13,6 +14,11 @@ namespace AccountingSystemUI.ViewModel
     {
         IWinAccount _currentUser;
         IDBInteract _dbInteract;
+        IRepo<Category> _catRepo;
+        IRepo<User> _userRepo;
+        IRepo<Data> _transactions;
+        IRepo<Recipient> _recipientRepo;
+
         private readonly IFactory _factory;
         MoneyManagementWindow moneyManagementWindow;
         bool _guest = false;
@@ -101,10 +107,11 @@ namespace AccountingSystemUI.ViewModel
 
         private void GetReposFromFactory()
         {
-            _factory.CreateCategoryRepo();
-            _factory.CreateRecipientRepo();
-            _factory.CreateUserRepo();
-            _factory.CreateDataRepo();
+            _catRepo = _factory.CreateCategoryRepo();
+            var xx = _factory.CreateCategoryObservableCollection();
+            _recipientRepo = _factory.CreateRecipientRepo();
+            _userRepo = _factory.CreateUserRepo();
+            _transactions = _factory.CreateDataRepo();
         }
     }
 }

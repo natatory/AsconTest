@@ -6,6 +6,8 @@ using Ninject.Extensions.Factory;
 using AccountingSystemUI.Application;
 using System.Collections.ObjectModel;
 using AccountingSystemUI.Cmds;
+using Ninject.Syntax;
+using Ninject;
 
 namespace AccountingSystemUI.DI
 {
@@ -35,5 +37,9 @@ namespace AccountingSystemUI.DI
 
             Bind<IFactory>().ToFactory();
         }
+        //private IList<T> GetObservableCollection<T>(IRepo<T> repo)
+        //{
+        //    return new ObservableCollection<T>(repo.GetAll());
+        //}
     }
 }
