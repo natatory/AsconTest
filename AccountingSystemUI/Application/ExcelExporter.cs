@@ -9,7 +9,7 @@ namespace AccountingSystemUI.Cmds
 {
     public class ExcelExporter : IExcelExporter
     {
-        public void ExportToFile(string name, IList<IDataForExport> listToExport)
+        public void ExportToFile(string name, IList<DataForExport> listToExport)
         {
             if (listToExport == null || string.IsNullOrEmpty(name)) return;
             using (var workbook = new XLWorkbook())

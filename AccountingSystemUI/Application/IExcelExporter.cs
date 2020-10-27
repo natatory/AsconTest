@@ -8,6 +8,6 @@ namespace AccountingSystemUI.Application
 {
     public interface IExcelExporter
     {
-        void ExportToFile(string name, IList<IDataForExport> listToExport);
+        void ExportToFile(string name, IList<DataForExport> listToExport);
     }
 }

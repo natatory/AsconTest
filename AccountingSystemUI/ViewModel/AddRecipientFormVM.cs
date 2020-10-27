@@ -19,10 +19,10 @@ namespace AccountingSystemUI.ViewModel
         public IList<Recipient> Recipients { get; private set; }
         public Recipient NewRecipient { get; private set; }
         private readonly IFactory _factory;
-        public AddRecipientFormVM(IFactory factory)
+        public AddRecipientFormVM(IFactory factory, IList<Recipient> recipients)
         {
             _factory = factory;
-            Recipients = _factory.CreateRecipientObservableCollection(); ;
+            Recipients = recipients;
             _recipientRepo = _factory.CreateRecipientRepo();
             NewRecipient = GetNewRecipient();
             CloseAddDialogEventSubscribe();
@@ -40,7 +40,7 @@ namespace AccountingSystemUI.ViewModel
         private ICommand _addRecCmd = null;
         public ICommand AddRecCmd =>
 
-             _addRecCmd ?? (_addRecCmd = new AddRecCommand(_factory));
+             _addRecCmd ?? (_addRecCmd = new AddRecCommand(_factory, Recipients));
 
         private void CloseAddDialogEventSubscribe()
         {

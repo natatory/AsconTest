@@ -17,11 +17,11 @@ namespace AccountingSystemUI.Cmds
         public event EventHandler CloseDialog;
         private readonly IFactory _factory;
 
-        public AddCatCommand(IFactory factory)
+        public AddCatCommand(IFactory factory, IList<Category> categories)
         {
             _factory = factory;
             _catRepo = _factory.CreateCategoryRepo();
-            _categories = _factory.CreateCategoryObservableCollection();
+            _categories = categories;
             CheckNullInputParams(_catRepo, _categories);
         }
 

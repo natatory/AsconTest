@@ -15,11 +15,9 @@ namespace AccountingSystemUI.View
     {
         private AddUserFormVM _addUserFormVM;
         private UserDataInfoForm _userDataInfoForm;
-        private readonly IFactory _factory;
-        public AddUserForm(IFactory factory)
+        public AddUserForm(IFactory factory, IList<User> users)
         {
-            _factory = factory;
-            _addUserFormVM = new AddUserFormVM(_factory);
+            _addUserFormVM = new AddUserFormVM(factory, users);
             this.DataContext = _addUserFormVM;
             InitializeComponent();
         }

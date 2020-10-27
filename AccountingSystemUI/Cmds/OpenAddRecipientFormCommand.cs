@@ -11,10 +11,10 @@ namespace AccountingSystemUI.Cmds
         private IList<Recipient> _recipients;
         private IRepo<Recipient> _recipientRepo;
         private readonly IFactory _factory;
-        public OpenAddRecipientFormCommand(IFactory factory)
+        public OpenAddRecipientFormCommand(IFactory factory, IList<Recipient> recipients)
         {
             _factory = factory;
-            _recipients = _factory.CreateRecipientObservableCollection();
+            _recipients = recipients;
             _recipientRepo = _factory.CreateRecipientRepo();
         }
         public override bool CanExecute(object parameter)
@@ -24,7 +24,7 @@ namespace AccountingSystemUI.Cmds
 
         public override void Execute(object parameter)
         {
-            var addCatForm = new AddRecipientForm(_factory);
+            var addCatForm = new AddRecipientForm(_factory, _recipients);
             addCatForm.ShowDialog();
         }
     }

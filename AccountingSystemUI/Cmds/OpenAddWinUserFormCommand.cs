@@ -11,10 +11,10 @@ namespace AccountingSystemUI.Cmds
     {
         private IList<IWinAccount> _winUsers;
         private readonly IFactory _factory;
-        public OpenAddWinUserFormCommand(IList<IWinAccount> winUsers)
+        public OpenAddWinUserFormCommand(IList<IWinAccount> winUsers, IFactory factory)
         {
             _winUsers = winUsers;
-            _factory = _factory;
+            _factory = factory;
         }
         public override bool CanExecute(object parameter)
         {

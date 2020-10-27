@@ -19,10 +19,10 @@ namespace AccountingSystemUI.ViewModel
         public IList<Category> Categories { get; private set; }
         private readonly IFactory _factory;
         public Category NewCategory { get; private set; }
-        public AddCatFormVM(IFactory factoey)
+        public AddCatFormVM(IFactory factoey, IList<Category> categories)
         {
             _factory = factoey;
-            Categories = _factory.CreateCategoryObservableCollection();
+            Categories = categories;
             _catRepo = _factory.CreateCategoryRepo();
             NewCategory = GetNewCategory();
             CloseAddDialogEventSubscribe();
@@ -40,7 +40,7 @@ namespace AccountingSystemUI.ViewModel
         private ICommand _addCatCmd = null;
         public ICommand AddCatCmd =>
 
-             _addCatCmd ?? (_addCatCmd = new AddCatCommand(_factory));
+             _addCatCmd ?? (_addCatCmd = new AddCatCommand(_factory, Categories));
 
         private void CloseAddDialogEventSubscribe()
         {

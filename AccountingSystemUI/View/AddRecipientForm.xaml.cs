@@ -14,9 +14,9 @@ namespace AccountingSystemUI.View
     public partial class AddRecipientForm : Window
     {
         private AddRecipientFormVM addRecFormVM;
-        public AddRecipientForm(IFactory factory)
+        public AddRecipientForm(IFactory factory, IList<Recipient> recipients)
         {
-            addRecFormVM = new AddRecipientFormVM(factory);
+            addRecFormVM = new AddRecipientFormVM(factory, recipients);
             this.DataContext = addRecFormVM;
             InitializeComponent();
     }

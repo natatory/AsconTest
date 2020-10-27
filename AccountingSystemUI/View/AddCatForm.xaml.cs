@@ -15,10 +15,10 @@ namespace AccountingSystemUI.View
         private AddCatFormVM addCatFormVM;
         private readonly IFactory _factory;
 
-        public AddCatForm(IFactory factory)
+        public AddCatForm(IFactory factory, IList<Category> categories)
         {
             _factory = factory;
-            addCatFormVM = new AddCatFormVM(_factory);
+            addCatFormVM = new AddCatFormVM(_factory, categories);
             this.DataContext = addCatFormVM;
             InitializeComponent();
         }

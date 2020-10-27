@@ -19,11 +19,11 @@ namespace AccountingSystemUI.Cmds
 
         public event EventHandler CloseDialog;
 
-        public AddUserCommand(IFactory factory)
+        public AddUserCommand(IFactory factory, IList<User> users)
         {
             _factory = factory;
             _userRepo = _factory.CreateUserRepo();
-            _users = _factory.CreateUserObservableCollection();
+            _users = users;
             CheckNullInputParams(_userRepo, _users);
         }
 

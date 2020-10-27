@@ -29,10 +29,10 @@ namespace AccountingSystemUI.Cmds
             var transactions = ExstractTargetFieldsFromData(currentUser.Transactions.ToList());
             Task.Factory.StartNew(() =>
             {
-                _excelExporter.ExportToFile(currentUser.ToString(), transactions);
+                ExportAsync(currentUser, transactions);
             });
         }
-        private IList<IDataForExport> ExstractTargetFieldsFromData(IList<Data> listData)
+        private IList<DataForExport> ExstractTargetFieldsFromData(IList<Data> listData)
         {
             var result = new List<DataForExport>();
             foreach (var d in listData)
@@ -48,7 +48,11 @@ namespace AccountingSystemUI.Cmds
                     Date = d.Date.ToString()
                 });
             }
-            return result as IList<IDataForExport>;
+            return result;
+        }
+        private void ExportAsync(User currentUser, IList<DataForExport> transactions)
+        {
+             _excelExporter.ExportToFile(currentUser.ToString(), transactions);
         }
     }
 }

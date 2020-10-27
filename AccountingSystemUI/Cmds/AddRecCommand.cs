@@ -18,11 +18,11 @@ namespace AccountingSystemUI.Cmds
 
         public event EventHandler CloseDialog;
 
-        public AddRecCommand(IFactory factory)
+        public AddRecCommand(IFactory factory, IList<Recipient> recipients)
         {
             _factory = factory;
             _recipientRepo = _factory.CreateRecipientRepo();
-            _recipients = _factory.CreateRecipientObservableCollection();
+            _recipients = recipients;
             CheckNullInputParams(_recipientRepo, _recipients);
         }
 

@@ -29,7 +29,7 @@ namespace AccountingSystemUI.View
             Transactions = new ObservableCollection<Data>(_selectedUser.Transactions);
             Title = "Данные пользователя " + _selectedUser.ToString();
             InitializeComponent();
-            //dgTransactions.ItemsSource = Transactions;
+            dgTransactions.ItemsSource = Transactions;
         }
     }
 }

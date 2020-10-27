@@ -14,11 +14,6 @@ namespace AccountingSystemUI.ViewModel
     {
         IWinAccount _currentUser;
         IDBInteract _dbInteract;
-        IRepo<Category> _catRepo;
-        IRepo<User> _userRepo;
-        IRepo<Data> _transactions;
-        IRepo<Recipient> _recipientRepo;
-
         private readonly IFactory _factory;
         MoneyManagementWindow moneyManagementWindow;
         bool _guest = false;
@@ -75,7 +70,7 @@ namespace AccountingSystemUI.ViewModel
                 AddMsg("Подключение к БД..");
                 if (_dbInteract.IsDBExist("AccountingSystem")) //connectionString now is hardcodet in DBInteract
                 {
-                    //for user-account just create entities from existing db
+                    //for user-account just create Repos from existing db
                     try
                     {
                         GetReposFromFactory();
@@ -107,11 +102,10 @@ namespace AccountingSystemUI.ViewModel
 
         private void GetReposFromFactory()
         {
-            _catRepo = _factory.CreateCategoryRepo();
-            var xx = _factory.CreateCategoryObservableCollection();
-            _recipientRepo = _factory.CreateRecipientRepo();
-            _userRepo = _factory.CreateUserRepo();
-            _transactions = _factory.CreateDataRepo();
+            _factory.CreateCategoryRepo();
+            _factory.CreateRecipientRepo();
+            _factory.CreateUserRepo();
+            _factory.CreateDataRepo();
         }
     }
 }

@@ -125,7 +125,6 @@
     </ApplicationDefinition>
     <Compile Include="Application\DataForExport.cs" />
     <Compile Include="Application\DBInteract.cs" />
-    <Compile Include="Application\IDataForExport.cs" />
     <Compile Include="Application\IDBInteract.cs" />
     <Compile Include="Application\IEnumerableToDataTable.cs" />
     <Compile Include="Application\IExcelExporter.cs" />
@@ -152,10 +151,12 @@
     <Compile Include="ViewModel\AddRecipientFormVM.cs" />
     <Compile Include="ViewModel\AddUserFormVM.cs" />
     <Compile Include="ViewModel\AddWinUserFormVM.cs" />
+    <Compile Include="ViewModel\BoolToYesNoConverter.cs" />
     <Compile Include="ViewModel\CategoryConverter.cs" />
     <Compile Include="ViewModel\DataGridIndexConverter.cs" />
     <Compile Include="ViewModel\DataMultiConverter.cs" />
     <Compile Include="ViewModel\DialogCloser.cs" />
+    <Compile Include="ViewModel\IncomeExpensesStateLocalization.cs" />
     <Compile Include="ViewModel\MoneyManagementVM.cs" />
     <Compile Include="ViewModel\PositiveToCollapseConverter.cs" />
     <Compile Include="ViewModel\RecipientConverter.cs" />

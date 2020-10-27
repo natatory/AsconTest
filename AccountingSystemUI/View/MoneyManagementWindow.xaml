@@ -65,6 +65,7 @@
         <vm:IndexConverter x:Key="IndexConverter"/>
         <vm:DataMultiConverter x:Key="DataConverter"/>
         <vm:PositiveToCollapseConverter x:Key="PositiveToCollapseConverter"/>
+        
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

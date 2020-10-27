@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AccountingSystemUI.Application
 {
-    public class DataForExport
+    public class DataForExport //: IDataForExport
     {
         public string TransactionAmount { get; set; }
         public string Description { get; set; }

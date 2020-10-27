@@ -61,6 +61,7 @@
         </Style>
         <vm:UserMultiConverter x:Key="UserConverter"/>
         <vm:IndexConverter x:Key="IndexConverter"/>
+        <vm:BoolToYesNoConverter x:Key="YesNoConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -76,7 +77,7 @@
                             Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}" />-->
                 <DataGridTextColumn  Header="Логин Windows" Binding = "{Binding WinUserName}"/>
                 <DataGridTextColumn  Header="ФИО" Binding = "{Binding}"/>
-                <DataGridTextColumn  Header="Администратор" Binding = "{Binding IsAdmin}"/>
+                <DataGridTextColumn  Header="Администратор" Binding = "{Binding IsAdmin, Converter={StaticResource YesNoConverter}}"/>
                 <DataGridTextColumn  Header="Баланс" Binding = "{Binding Balance}"/>
             </DataGrid.Columns>
         </DataGrid>

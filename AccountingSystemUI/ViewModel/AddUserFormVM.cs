@@ -21,10 +21,10 @@ namespace AccountingSystemUI.ViewModel
         public bool? DialogResult { get; set; }
         public User NewUser { get; set; }
         private readonly IFactory _factory;
-        public AddUserFormVM(IFactory factory)
+        public AddUserFormVM(IFactory factory, IList<User> users )
         {
             _factory = factory;
-            Users = _factory.CreateUserObservableCollection();
+            Users = users;
             WinUsers = GetWinAccounts();
             NewUser = GetNewUser();
         }
@@ -55,11 +55,11 @@ namespace AccountingSystemUI.ViewModel
         }
         private ICommand _addUserCmd = null;
         public ICommand AddUserCmd =>
-             _addUserCmd ?? (_addUserCmd = new AddUserCommand(_factory));
+             _addUserCmd ?? (_addUserCmd = new AddUserCommand(_factory, Users));
 
         private ICommand _openAddWinUserFormCmd = null;
         public ICommand OpenAddWinUserFormCmd =>
-             _openAddWinUserFormCmd ?? (_openAddWinUserFormCmd = new OpenAddWinUserFormCommand(WinUsers));
+             _openAddWinUserFormCmd ?? (_openAddWinUserFormCmd = new OpenAddWinUserFormCommand(WinUsers, _factory));
 
         private void CloseAddDialogEventSubscribe()
         {

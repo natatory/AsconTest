@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using System.Windows.Input;
 using AccountingSystemUI.DI;
+using Ninject;
 
 namespace AccountingSystemUI.Cmds
 {
@@ -18,12 +19,12 @@ namespace AccountingSystemUI.Cmds
         private User _currentUser;
         private readonly IFactory _factory;
 
-        public AddDataCommand(IFactory factory, IList<Data> currentUserTransactions, User currentUser)
+        public AddDataCommand(IFactory factory, IList<Data> transactions, IList<Data> currentUserTransactions, User currentUser)
         {
             _factory = factory;
             _currentUser = currentUser;
             _dataRepo = _factory.CreateDataRepo();
-            _transactions = _factory.CreateDataObservableCollection();
+            _transactions = transactions;
             _userRepo = _factory.CreateUserRepo();
             _currentUserTransactions = currentUserTransactions;
             CheckNullInputParams(_dataRepo, _transactions);

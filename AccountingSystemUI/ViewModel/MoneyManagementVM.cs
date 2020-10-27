@@ -14,13 +14,12 @@ using AccountingSystemUI.Cmds;
 using AccountingSystemUI.DI;
 using System.ComponentModel;
 using AccountingSystemUI.Application;
-
+using Ninject;
 
 namespace AccountingSystemUI.ViewModel
 {
     public class MoneyManagementVM
     {
-
         public Visibility VisibilityMenu { get; set; } = Visibility.Collapsed;
         public Visibility VisibilityNewCatBtn { get; set; } = Visibility.Hidden;
         public Visibility VisibilityConnectDBWarning { get; set; } = Visibility.Hidden;
@@ -50,10 +49,10 @@ namespace AccountingSystemUI.ViewModel
             _factory = factory;
             if (!guest)
             {
-                Categories = _factory.CreateCategoryObservableCollection();
-                Recipients = _factory.CreateRecipientObservableCollection();
-                Users = _factory.CreateUserObservableCollection();
-                Transactions = _factory.CreateDataObservableCollection();
+                Categories = new ObservableCollection<Category>( _factory.CreateCategoryRepo().GetAll());
+                Recipients = new ObservableCollection<Recipient>( _factory.CreateRecipientRepo().GetAll());
+                Users = new ObservableCollection<User>( _factory.CreateUserRepo().GetAll());
+                Transactions = new ObservableCollection<Data>( _factory.CreateDataRepo().GetAll());
             }
             else
             {
@@ -66,19 +65,19 @@ namespace AccountingSystemUI.ViewModel
 
         private ICommand _openAddCategoryForm = null;
         public ICommand OpenAddCategoryFormCmd =>
-                _openAddCategoryForm ?? (_openAddCategoryForm = new OpenAddCategoryFormCommand(_factory));
+                _openAddCategoryForm ?? (_openAddCategoryForm = new OpenAddCategoryFormCommand(_factory, Categories));
 
         private ICommand _openAddRecipientForm = null;
         public ICommand OpenAddRecipientFormCmd =>
-                _openAddRecipientForm ?? (_openAddRecipientForm = new OpenAddRecipientFormCommand(_factory));
+                _openAddRecipientForm ?? (_openAddRecipientForm = new OpenAddRecipientFormCommand(_factory, Recipients));
 
         private ICommand _addData = null;
         public ICommand AddDataCmd =>
-                _addData ?? (_addData = new AddDataCommand(_factory, _currentUserTransactions, CurrentUser));
+                _addData ?? (_addData = new AddDataCommand(_factory, Transactions, _currentUserTransactions, CurrentUser));
 
         private ICommand _openUserManagementForm = null;
         public ICommand OpenUserManagementForm =>
-                _openUserManagementForm ?? (_openUserManagementForm = new OpenUserManagementFormCommand(_factory));
+                _openUserManagementForm ?? (_openUserManagementForm = new OpenUserManagementFormCommand(_factory, Users));
 
         private ICommand _excelExport = null;
         public ICommand ExcelExport =>
