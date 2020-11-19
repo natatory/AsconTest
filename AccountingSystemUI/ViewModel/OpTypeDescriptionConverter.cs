@@ -7,12 +7,12 @@ using AccountingSystemDAL.Model;
 
 namespace AccountingSystemUI.ViewModel
 {
-    class IncomeExpensesStateLocalization : IValueConverter
+    class OpTypeDescriptionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Data.OperationType)
-                return ((Data.OperationType)value) == Data.OperationType.Расходы ? "Расходы" : "Доходы";
+                return ((Data.OperationType)value) == Data.OperationType.Exspense ? "Расходы" : "Доходы";
             return null;
 
         }
@@ -20,8 +20,8 @@ namespace AccountingSystemUI.ViewModel
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is string)
-                return ((string)value) == "Доходы" ? Data.OperationType.Доходы
-                    : Data.OperationType.Расходы;
+                return ((string)value) == "Доходы" ? Data.OperationType.Income
+                    : Data.OperationType.Exspense;
             else return null;
         }
     }

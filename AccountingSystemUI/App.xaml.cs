@@ -1,12 +1,7 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using AccountingSystemUI.View;
-using AccountingSystemDAL.Repos;
-using AccountingSystemDAL.Model;
-using AccountingSystemUI.Application;
 using Ninject;
 using AccountingSystemUI.DI;
-using System.Linq;
 
 namespace AccountingSystemUI
 {

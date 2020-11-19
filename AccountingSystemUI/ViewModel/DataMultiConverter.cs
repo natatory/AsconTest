@@ -19,7 +19,7 @@ namespace AccountingSystemUI.ViewModel
             else
                 try
                 {
-                    return new Data
+                    var d = new Data
                     {
                         OpType = (Data.OperationType)values[5],
                         CategoryId = ((Category)values[6]).CategoryId,
@@ -27,6 +27,7 @@ namespace AccountingSystemUI.ViewModel
                         Description = values[8].ToString(),
                         TransactionAmount = decimal.Parse(values[9].ToString()),
                     };
+                    return d;
                 }
                 //there is no need for a reaction, just skip the casting errors
                 //until the full set of user inputs (error less) is reached 

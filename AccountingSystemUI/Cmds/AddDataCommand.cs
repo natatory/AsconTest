@@ -72,7 +72,7 @@ namespace AccountingSystemUI.Cmds
                 RecipientId = data.RecipientId,
                 Description = data.Description,
                 TransactionAmount = data.TransactionAmount,
-                BalanceAfterTransact = data.OpType == Data.OperationType.Расходы ?
+                BalanceAfterTransact = data.OpType == Data.OperationType.Exspense ?
                         _currentUser.Balance - data.TransactionAmount
                         : _currentUser.Balance + data.TransactionAmount
             };

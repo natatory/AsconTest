@@ -30,15 +30,27 @@ namespace AccountingSystemUI.ViewModel
         public User CurrentUser { get; set; }
         public IList<Data> CurrentUserTransactions { get => _currentUserTransactions; }
         private IList<Data> _currentUserTransactions = null;
+        public IEnumerable<string> OpTypes
+        {
+            get => UIEnumHelper.IncomeExpenseSelections;
+        }
 
+        public Data.OperationType NewDataOpType
+        {
+            get
+            {
+                if (NewData != null) return NewData.OpType;
+                else return default;
+            }
+            set
+            {
+                if (NewData != null) NewData.OpType = value;
+                else return;
+            }
+        }
         //some data as started value for binding user input controls
         public Data NewData { get; set; }
 
-        public IList<Data.OperationType> OpTypes
-        {
-            get => Enum.GetValues(typeof(Data.OperationType))
-            .OfType<Data.OperationType>().ToList();
-        }
         public string Mode { get; set; } = "Пользователь";
 
         private readonly IFactory _factory;
@@ -49,10 +61,10 @@ namespace AccountingSystemUI.ViewModel
             _factory = factory;
             if (!guest)
             {
-                Categories = new ObservableCollection<Category>( _factory.CreateCategoryRepo().GetAll());
-                Recipients = new ObservableCollection<Recipient>( _factory.CreateRecipientRepo().GetAll());
-                Users = new ObservableCollection<User>( _factory.CreateUserRepo().GetAll());
-                Transactions = new ObservableCollection<Data>( _factory.CreateDataRepo().GetAll());
+                Categories = new ObservableCollection<Category>(_factory.CreateCategoryRepo().GetAll());
+                Recipients = new ObservableCollection<Recipient>(_factory.CreateRecipientRepo().GetAll());
+                Users = new ObservableCollection<User>(_factory.CreateUserRepo().GetAll());
+                Transactions = new ObservableCollection<Data>(_factory.CreateDataRepo().GetAll());
             }
             else
             {
@@ -82,6 +94,7 @@ namespace AccountingSystemUI.ViewModel
         private ICommand _excelExport = null;
         public ICommand ExcelExport =>
                 _excelExport ?? (_excelExport = new ExcelExportCommand(_factory));
+
 
         private void UserInit(IWinAccount currentUser)
         {
@@ -124,7 +137,7 @@ namespace AccountingSystemUI.ViewModel
                 UserId = CurrentUser.UserId,
                 CategoryId = Categories.First().CategoryId,
                 Description = "Описание операции",
-                OpType = Data.OperationType.Расходы,
+                OpType = Data.OperationType.Exspense,
                 RecipientId = Recipients.First().RecipientId,
                 TransactionAmount = 1m,
             };

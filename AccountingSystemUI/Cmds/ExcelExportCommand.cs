@@ -40,7 +40,7 @@ namespace AccountingSystemUI.Cmds
                 result.Add(new DataForExport
                 {
                     Category = d.Category.ToString(),
-                    OpType = d.OpType == Data.OperationType.Доходы ? "Доходы" : "Расходы",
+                    OpType = d.OpType == Data.OperationType.Income ? "Доходы" : "Расходы",
                     Description = d.Description.ToString(),
                     Recipient = d.Recipient.ToString(),
                     TransactionAmount = d.TransactionAmount.ToString(),

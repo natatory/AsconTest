@@ -65,7 +65,8 @@
         <vm:IndexConverter x:Key="IndexConverter"/>
         <vm:DataMultiConverter x:Key="DataConverter"/>
         <vm:PositiveToCollapseConverter x:Key="PositiveToCollapseConverter"/>
-        
+        <vm:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+        <vm:OpTypeDescriptionConverter x:Key="OpTypeDescriptionConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -94,7 +95,7 @@
                 <!--<DataGridTextColumn ClipboardContentBinding="{x:Null}" Header="№"
                             Binding="{Binding Converter={StaticResource IndexConverter},
                             Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}" />-->
-                <DataGridTextColumn  Header="Операция" Binding = "{Binding OpType}"/>
+                <DataGridTextColumn  Header="Операция" Binding = "{Binding OpType, Converter={StaticResource OpTypeDescriptionConverter}}"/>
                 <DataGridTextColumn  Header="Категория" Binding = "{Binding Category}"/>
                 <DataGridTextColumn  Header="Получатель" Binding = "{Binding Recipient}"/>
                 <DataGridTextColumn  Header="Описание" Binding = "{Binding Description}"/>
@@ -121,8 +122,8 @@
                 </StackPanel>
                 <StackPanel Grid.Row="1"  Orientation="Horizontal">
                     <ComboBox  x:Name="cbOpType" Height="20" 
-                    ItemsSource="{Binding Path=OpTypes, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
-                    SelectedItem="{Binding Path=NewData.OpType}" VerticalAlignment="Top" Margin="0,0,15,0" Width="90"/>
+                    ItemsSource="{Binding Path=OpTypes, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, Mode=OneWay}"
+                    SelectedItem="{Binding Path=NewDataOpType, Converter={StaticResource EnumDescriptionConverter}}" VerticalAlignment="Top" Margin="0,0,15,0" Width="90"/>
                     <ComboBox x:Name="cbCategory" SelectedIndex="0" Height="20" VerticalAlignment="Top" Margin="0,0,5,0"
                     ItemsSource="{Binding Path=Categories, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"
                     SelectedItem="{Binding Path=NewData.Category}" Width="90" />
@@ -164,7 +165,7 @@
                                 <Binding ElementName="txtDescr" Path="(Validation.HasError)" ></Binding>
                                 <Binding ElementName="txtSum" Path="(Validation.HasError)" ></Binding>
 
-                                <Binding ElementName="cbOpType" Path="SelectedItem" ></Binding>
+                                <Binding ElementName="cbOpType" Path="SelectedItem"></Binding>
                                 <Binding ElementName="cbCategory" Path="SelectedItem" ></Binding>
                                 <Binding ElementName="cbRecipient" Path="SelectedItem" ></Binding>
                                 <Binding ElementName="txtDescr" Path="Text" ></Binding>

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,8 +19,15 @@ namespace AccountingSystemDAL.Model
 
         [Required]
         public OperationType OpType { get; set; }
-        public enum OperationType { Доходы, Расходы }
-
+        
+        public enum OperationType
+        {
+            [Description("Доходы")]
+            Income,
+            [Description("Расходы")]
+            Exspense
+        }
+        
         [Required]
         public DateTime Date { get; set; }
 
