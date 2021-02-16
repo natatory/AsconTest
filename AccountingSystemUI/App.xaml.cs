@@ -15,6 +15,7 @@ namespace AccountingSystemUI
     /// </summary>
     public partial class App : System.Windows.Application
     {
+        //test git stashes 2
         StartWindow startWindow;
 
         private void App_OnStartup(object sender, StartupEventArgs e)
