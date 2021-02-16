@@ -19,6 +19,7 @@ namespace AccountingSystemUI
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
+            ///test git
             App.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
             var ninjectKernel = new StandardKernel();
             ninjectKernel.Load(new CommonModule());
