@@ -22,6 +22,7 @@ namespace AccountingSystemUI
         {
             ///test git master 6
             //testbranch 2
+            //testbranch 3
             App.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
             var ninjectKernel = new StandardKernel();
             ninjectKernel.Load(new CommonModule());
