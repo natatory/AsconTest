@@ -15,12 +15,12 @@ namespace AccountingSystemUI
     /// </summary>
     public partial class App : System.Windows.Application
     {
-        //test git stashes 3
+    
         StartWindow startWindow;
 
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
-            ///test git master 4
+            ///test git master 5
             App.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
             var ninjectKernel = new StandardKernel();
             ninjectKernel.Load(new CommonModule());
